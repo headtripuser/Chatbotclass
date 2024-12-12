@@ -7,7 +7,7 @@ st.title("Chatbot UI")
 if "chat_log" not in st.session_state:
     st.session_state.chat_log = []
 
-# Eingabefeld für Benutzer
+# Eingabefeld für Benutzer*innen
 user_input = st.text_input("Enter your message:", key="user_input")
 
 if st.button("Send"):
