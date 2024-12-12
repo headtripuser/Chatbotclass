@@ -1,6 +1,6 @@
 from openai import AssistantEventHandler
 import json
-from wiki_utills import edit_article, create_article, get_article_content, delete_article
+from wiki_utills import edit_article, create_article, delete_article
 
 
 class MyEventHandler(AssistantEventHandler):
@@ -11,6 +11,7 @@ class MyEventHandler(AssistantEventHandler):
         self.session = session
         self.assistant_id = assistant_id
         self.vector_store_id = vector_store_id
+        self.latest_response = ""
 
     def on_event(self, event):
 
@@ -20,6 +21,7 @@ class MyEventHandler(AssistantEventHandler):
             delta_content = event.data.delta.content
             for item in delta_content:
                 if item.type == "text":  # Direkt auf das Attribut zugreifen
+                    self.latest_response += item.text.value
                     message_text = item.text.value  # Zugriff auf das 'value'-Attribut von TextDelta
                     print(item.text.value, end="", flush=True)  # Streamt die Nachricht fließend ohne Zeilenumbruch
 
