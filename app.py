@@ -11,6 +11,13 @@ if "chatbot_initialized" not in st.session_state:
     st.session_state.chatbot_initialized = True
     st.session_state.chat_log = []  # Initialisiere den Chat-Verlauf
 
+    # **Startnachricht hinzufügen**
+    st.session_state.chat_log.append(
+        {"role": "assistant", "content": "Hey! Wie kann ich dir helfen?"}
+    )
+
+st.image("logo.png", width=300)
+
 # Callback-Funktion für das Senden der Nachricht
 def send_user_message():
     user_message = st.session_state.user_input.strip()
@@ -33,8 +40,8 @@ def send_user_message():
         # 4. Eingabefeld leeren
         st.session_state.user_input = ""
 
-# Haupttitel
-st.title("headtrip Chatbot")
+
+
 
 # Chat-Nachrichten anzeigen
 for message in st.session_state.chat_log:
