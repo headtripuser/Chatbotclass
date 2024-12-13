@@ -1,7 +1,6 @@
 import streamlit as st
 from main import initialize_chatbot, send_message  # Importiere deine Funktionen
 
-
 # Initialisiere den Chatbot (nur einmal)
 if "chatbot_initialized" not in st.session_state:
     client, session, thread, vector_store_id = initialize_chatbot()
@@ -34,76 +33,35 @@ def send_user_message():
         # 4. Eingabefeld leeren
         st.session_state.user_input = ""
 
-# CSS für Layout und automatisches Scrollen
-st.markdown(
-    """
-    <style>
-    .chat-container {
-        background-color: #ffffff;
-        padding: 10px;
-        border-radius: 5px;
-        max-height: 70vh;
-        overflow-y: auto;
-        display: flex;
-        flex-direction: column;
-        border: 1px solid #ddd;
-    }
-    .chat-container::-webkit-scrollbar {
-        width: 5px;
-    }
-    .chat-container::-webkit-scrollbar-thumb {
-        background-color: #ccc;
-        border-radius: 5px;
-    }
-    .user-message {
-        background-color: #f0f0f0;
-        padding: 10px;
-        border-radius: 10px;
-        margin-bottom: 5px;
-        align-self: flex-end;
-        max-width: 80%;
-    }
-    .bot-message {
-        background-color: #e7f3fe;
-        padding: 10px;
-        border-radius: 10px;
-        margin-bottom: 5px;
-        align-self: flex-start;
-        max-width: 80%;
-    }
-    </style>
-    <script>
-    window.onload = () => {
-        const chatContainer = document.querySelector('.chat-container');
-        if (chatContainer) chatContainer.scrollTop = chatContainer.scrollHeight;
-    };
-    </script>
-    """,
-    unsafe_allow_html=True,
-)
-
 # Haupttitel
 st.title("headtrip Chatbot")
 
-# Chat-Container
-st.markdown('<div class="chat-container">', unsafe_allow_html=True)
+# Chat-Nachrichten anzeigen
 for message in st.session_state.chat_log:
-    if message["role"] == "user":
-        st.markdown(
-            f'<div class="user-message">{message["content"]}</div>',
-            unsafe_allow_html=True,
-        )
-    elif message["role"] == "assistant":
-        st.markdown(
-            f'<div class="bot-message">{message["content"]}</div>',
-            unsafe_allow_html=True,
-        )
-st.markdown("</div>", unsafe_allow_html=True)  # Schließe den Container
+    with st.chat_message(message["role"]):
+        st.markdown(message["content"])
 
 # Eingabefeld
-user_input = st.text_input(
-    "Schreiben Sie Ihre Nachricht:",
-    key="user_input",
-    on_change=send_user_message,
-    placeholder="Nachricht hier eingeben...",
-)
+if user_input := st.chat_input("Schreiben Sie Ihre Nachricht:"):
+    # Benutzer-Nachricht anzeigen
+    with st.chat_message("user"):
+        st.markdown(user_input)
+
+    # Nachricht zum Verlauf hinzufügen
+    st.session_state.chat_log.append({"role": "user", "content": user_input})
+
+    # Bot-Antwort generieren
+    bot_response = send_message(
+        st.session_state.client,
+        st.session_state.session,
+        st.session_state.thread,
+        st.session_state.vector_store_id,
+        user_input,
+    )
+
+    # Bot-Antwort anzeigen
+    with st.chat_message("assistant"):
+        st.markdown(bot_response)
+
+    # Bot-Antwort zum Verlauf hinzufügen
+    st.session_state.chat_log.append({"role": "assistant", "content": bot_response})

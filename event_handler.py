@@ -12,10 +12,10 @@ class MyEventHandler(AssistantEventHandler):
         self.assistant_id = assistant_id
         self.vector_store_id = vector_store_id
         self.latest_response = ""
+        self.last_function_called = None  # Speichert die zuletzt aufgerufene Funktion
+        self.last_function_result = None  # Speichert das Ergebnis der letzten Funktion
 
     def on_event(self, event):
-
-
         if event.event == "thread.message.delta":
             # Extrahiere den Text aus dem Delta
             delta_content = event.data.delta.content
@@ -51,28 +51,39 @@ class MyEventHandler(AssistantEventHandler):
 
             # Logik basierend auf der Funktion
             if tool_call.function.name == "create_article_and_json":
+                self.last_function_called = "create_article_and_json"
                 if title and content:
                     print(f"[DEBUG] Erstelle neuen Artikel: {title} mit Inhalt: {content}")
                     result = create_article(title, content, self.session, self.client, self.vector_store_id)
+                    self.latest_response = f"Der Artikel {title} wurde erstellt."
                 else:
                     result = {"success": False, "message": "Titel oder Inhalt fehlen für die Erstellung des Artikels."}
 
             elif tool_call.function.name == "edit_article":
+                self.last_function_called = "edit_article"
                 if title and user_request:
                     print(f"[DEBUG] Bearbeite Artikel: {title} mit Anfrage: {user_request}")
                     result = edit_article(title, user_request, self.session, self.client, self.vector_store_id)
+                    self.latest_response = f"Der Artikel {title} wurde erfolgreich bearbeitet."
                 else:
                     result = {"success": False,
                               "message": "Titel oder Benutzeranfrage fehlen für die Bearbeitung des Artikels."}
 
             elif tool_call.function.name == "delete_article":
+                self.last_function_called = "delete_article"
                 if title:
                     print(f"Lösche Artikel mit dem Titel {title}...")
                     result = delete_article(title, self.client, self.vector_store_id, self.session)
-
+                    self.latest_response = f"Der Artikel {title} wurde erfolgreich gelöscht."
+                else:
+                    result = {"success": False, "message": "Titel fehlt für die Löschung des Artikels."}
 
             else:
+                self.last_function_called = "unknown"
                 result = {"success": False, "message": f"Unbekannte Funktion: {tool_call.function.name}"}
+
+            # Speichere das Ergebnis der letzten Funktion
+            self.last_function_result = result
 
             # Tool-Output sammeln
             tool_outputs.append({"tool_call_id": tool_call.id, "output": json.dumps(result)})
@@ -89,4 +100,3 @@ class MyEventHandler(AssistantEventHandler):
             tool_outputs=tool_outputs
         )
         print(f"[DEBUG] Tool-Outputs erfolgreich übermittelt. Neuer Run-Status: {response.status}")
-

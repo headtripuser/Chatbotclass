@@ -192,8 +192,7 @@ def create_article(title, content, session, client, vector_store_id):
         }
         response = session.post(api_url, data=create_params)
 
-        if response.status_code != 200 or "error" in response.json():
-            return {"success": False, "message": f"Fehler beim Erstellen des Artikels: {response.json()}"}
+
 
         # JSON-Datei mit Artikeldaten erstellen
         json_filename = f"{title}.json"
@@ -203,6 +202,11 @@ def create_article(title, content, session, client, vector_store_id):
 
         # Die erstellte Datei dem Vector Store zugänglich machen und hochladen:
         upload_to_vector_store(client, vector_store_id,json_filename)
+
+        if response.status_code != 200 or "error" in response.json():
+            return {"success": False, "message": f"Fehler beim Erstellen des Artikels: {response.json()}"}
+
+
 
 
 def edit_article(title, user_request, session, client, vector_store_id):
