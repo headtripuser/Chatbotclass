@@ -1,6 +1,7 @@
 import streamlit as st
 from main import initialize_chatbot, send_message  # Importiere deine Funktionen
 
+
 # Initialisiere den Chatbot (nur einmal)
 if "chatbot_initialized" not in st.session_state:
     client, session, thread, vector_store_id = initialize_chatbot()
@@ -26,26 +27,6 @@ def send_user_message():
             st.session_state.vector_store_id,
             user_message,
         )
-
-        # 3. Antwort des Chatbots zum Chat-Verlauf hinzufügen
-        st.session_state.chat_log.append({"role": "assistant", "content": bot_response})
-
-        # 4. Zusätzliche Nachricht bei Funktionsaufrufen hinzufügen
-        if "create_article_and_json" in bot_response:  # Beispielprüfung auf Funktionsaufruf
-            st.session_state.chat_log.append({
-                "role": "system",
-                "content": "Der Artikel wurde erfolgreich erstellt und in das System eingepflegt."
-            })
-        elif "edit_article" in bot_response:
-            st.session_state.chat_log.append({
-                "role": "system",
-                "content": "Der Artikel wurde erfolgreich bearbeitet."
-            })
-        elif "delete_article" in bot_response:
-            st.session_state.chat_log.append({
-                "role": "system",
-                "content": "Der Artikel wurde erfolgreich gelöscht."
-            })
 
         # 3. Antwort des Chatbots zum Chat-Verlauf hinzufügen
         st.session_state.chat_log.append({"role": "assistant", "content": bot_response})
@@ -102,7 +83,7 @@ st.markdown(
 )
 
 # Haupttitel
-st.title("Chatbot mit deiner Logik")
+st.title("headtrip Chatbot")
 
 # Chat-Container
 st.markdown('<div class="chat-container">', unsafe_allow_html=True)
