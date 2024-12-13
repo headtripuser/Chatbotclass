@@ -59,7 +59,7 @@ if user_input := st.chat_input("Schreiben Sie Ihre Nachricht:"):
         user_input,
     )
 
-    # Bot-Antwort anzeigen
+    # Bot-Antwort anzeigen neu
     with st.chat_message("assistant"):
         st.markdown(bot_response)
 
