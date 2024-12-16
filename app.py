@@ -70,5 +70,5 @@ if user_input := st.chat_input("Schreiben Sie Ihre Nachricht:"):
     with st.chat_message("assistant"):
         st.markdown(bot_response)
 
-    # Bot-Antwort zum Verlauf hinzufügen
+    # Bot-Antwort zum Verlauf hinzufügen *
     st.session_state.chat_log.append({"role": "assistant", "content": bot_response})
