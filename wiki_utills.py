@@ -209,7 +209,7 @@ def create_article(title, content, session, client, vector_store_id):
 
 
 
-def edit_article(title, user_request, session, client, vector_store_id):
+def edit_article(title, user_request, session, client, vector_store_id, responseoutput):
     """Bearbeitet den Inhalt eines existierenden Artikels."""
     # 1. Artikelinhalt abrufen
     print(f"Rufe Artikel '{title}' ab...")
@@ -249,6 +249,8 @@ def edit_article(title, user_request, session, client, vector_store_id):
         # 3. Speichern des neuen Artikels
         print("Speichere die Änderungen im Wiki...")
         save_response = save_article(title, assistant_output, session)
+
+        responseoutput = assistant_output
 
         if save_response.get("edit", {}).get("result") == "Success":
             return {"success": True, "message": f"Artikel '{title}' erfolgreich bearbeitet."}
