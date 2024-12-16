@@ -25,14 +25,16 @@ def send_user_message():
         # 1. Benutzer-Nachricht zum Chat-Verlauf hinzufügen
         st.session_state.chat_log.append({"role": "user", "content": user_message})
 
-        # 2. Chatbot-Antwort generieren
-        bot_response = send_message(
-            st.session_state.client,
-            st.session_state.session,
-            st.session_state.thread,
-            st.session_state.vector_store_id,
-            user_message,
-        )
+        # Zeige einen Spinner während der Bot-Antwort generiert wird
+        with st.spinner("Bitte warten..."):
+            # 2. Chatbot-Antwort generieren
+            bot_response = send_message(
+                st.session_state.client,
+                st.session_state.session,
+                st.session_state.thread,
+                st.session_state.vector_store_id,
+                user_message,
+            )
 
         # 3. Antwort des Chatbots zum Chat-Verlauf hinzufügen
         st.session_state.chat_log.append({"role": "assistant", "content": bot_response})
@@ -57,18 +59,21 @@ if user_input := st.chat_input("Schreiben Sie Ihre Nachricht:"):
     # Nachricht zum Verlauf hinzufügen
     st.session_state.chat_log.append({"role": "user", "content": user_input})
 
-    # Bot-Antwort generieren
-    bot_response = send_message(
-        st.session_state.client,
-        st.session_state.session,
-        st.session_state.thread,
-        st.session_state.vector_store_id,
-        user_input,
-    )
+    # Spinner anzeigen während der Bot-Antwort generiert wird
+    with st.spinner("Bitte warten..."):
+        # Bot-Antwort generieren
+        bot_response = send_message(
+            st.session_state.client,
+            st.session_state.session,
+            st.session_state.thread,
+            st.session_state.vector_store_id,
+            user_input,
+        )
 
-    # Bot-Antwort anzeigen neu
+    # Bot-Antwort anzeigen
     with st.chat_message("assistant"):
         st.markdown(bot_response)
 
-    # Bot-Antwort zum Verlauf hinzufügen **
+    # Bot-Antwort zum Verlauf hinzufügen
     st.session_state.chat_log.append({"role": "assistant", "content": bot_response})
+
