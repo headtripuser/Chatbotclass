@@ -59,26 +59,30 @@ class MyEventHandler(AssistantEventHandler):
                 else:
                     result = {"success": False, "message": "Titel oder Inhalt fehlen für die Erstellung des Artikels."}
 
-
             elif tool_call.function.name == "edit_article":
-
                 self.last_function_called = "edit_article"
                 if title and user_request:
                     print(f"[DEBUG] Bearbeite Artikel: {title} mit Anfrage: {user_request}")
+
+                    # Korrektes Entpacken der Rückgabe
                     result, assistant_output = edit_article(
+
                         title, user_request, self.session, self.client, self.vector_store_id
                     )
-                    if result["success"]:
+                    # Überprüfung, ob `result` gültig ist
+                    if result and "success" in result and result["success"]:
                         self.latest_response = (
                             f"Der Artikel '{title}' wurde erfolgreich bearbeitet.\n\n"
                             f"**Neuer Inhalt:**\n{assistant_output}"
                         )
                     else:
-                        self.latest_response = result["message"]
+                        # Fehlerhafte Bearbeitung abfangen
+                        self.latest_response = result.get("message", "Ein Fehler ist aufgetreten.")
                 else:
-
                     result = {"success": False,
                               "message": "Titel oder Benutzeranfrage fehlen für die Bearbeitung des Artikels."}
+                    self.latest_response = result["message"]
+
 
             elif tool_call.function.name == "delete_article":
                 self.last_function_called = "delete_article"
