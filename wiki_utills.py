@@ -208,14 +208,13 @@ def create_article(title, content, session, client, vector_store_id):
 
 
 
-
-def edit_article(title, user_request, session, client, vector_store_id, responseoutput):
+def edit_article(title, user_request, session, client, vector_store_id):
     """Bearbeitet den Inhalt eines existierenden Artikels."""
     # 1. Artikelinhalt abrufen
     print(f"Rufe Artikel '{title}' ab...")
     current_content = get_article_content(title, session)
     if not current_content:
-        return {"success": False, "message": f"Artikel '{title}' nicht gefunden."}
+        return {"success": False, "message": f"Artikel '{title}' nicht gefunden."}, None
 
     # 2. System-Prompt erstellen
     system_prompt = (
@@ -237,30 +236,26 @@ def edit_article(title, user_request, session, client, vector_store_id, response
         )
         assistant_output = response.choices[0].message.content.strip()
 
-
         if not assistant_output:
-            return {"success": False, "message": "Keine Antwort vom Assistant erhalten."}
+            return {"success": False, "message": "Keine Antwort vom Assistant erhalten."}, None
 
-        # Aktuallisieren des Vector_stores
+        # Aktualisieren des Vector Stores
         delete_article(title, client, vector_store_id, session)
-
         create_article(title, assistant_output, session, client, vector_store_id)
 
         # 3. Speichern des neuen Artikels
         print("Speichere die Änderungen im Wiki...")
         save_response = save_article(title, assistant_output, session)
 
-        responseoutput = assistant_output
-
         if save_response.get("edit", {}).get("result") == "Success":
-            return {"success": True, "message": f"Artikel '{title}' erfolgreich bearbeitet."}
+            return {"success": True, "message": f"Artikel '{title}' erfolgreich bearbeitet: \n {assistant_output}"}
         else:
-            return {"success": False, "message": f"Fehler beim Bearbeiten des Artikels: {save_response}"}
-
+            return {"success": False, "message": f"Fehler beim Bearbeiten des Artikels: {save_response}"}, None
 
     except Exception as e:
         print(f"Fehler bei der Bearbeitung: {e}")
-        return {"success": False, "message": f"Fehler bei der Bearbeitung: {e}"}
+        return {"success": False, "message": f"Fehler bei der Bearbeitung: {e}"}, None
+
 
 
 
