@@ -33,4 +33,4 @@ def send_message(client, session, thread, vector_store_id, user_message):
         stream.until_done()  # Warten, bis der Assistant fertig ist
 
     # Rückgabe der vollständigen Antwort
-    return handler.latest_response  # `latest_response` musst du in `MyEventHandler` hinzufügen
+    return handler.latest_response  # latest_response musst du in MyEventHandler hinzufügen
