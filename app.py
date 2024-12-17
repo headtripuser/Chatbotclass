@@ -42,7 +42,7 @@ mic_button_container.markdown("""
     <button class="mic-button">🎤</button>
     """, unsafe_allow_html=True)
 
-# Benutzer-Eingabe verarbeiten
+# Benutzer-Eingabe Verarbeitung
 if user_input := st.chat_input("Schreiben Sie Ihre Nachricht:"):
     with st.chat_message("user"):
         st.markdown(user_input)
