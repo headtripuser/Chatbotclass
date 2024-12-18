@@ -11,7 +11,7 @@ if "chatbot_initialized" not in st.session_state:
     st.session_state.chatbot_initialized = True
     st.session_state.chat_log = []  # Initialisiere den Chat-Verlauf
 
-    # **Startnachricht hinzufügen****
+    # **Startnachricht hinzufügen***
     st.session_state.chat_log.append(
         {"role": "assistant", "content": "Hey! Wie kann ich dir helfen?"}
     )
