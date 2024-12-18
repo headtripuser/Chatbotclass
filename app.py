@@ -10,7 +10,7 @@ if "chatbot_initialized" not in st.session_state:
     st.session_state.vector_store_id = vector_store_id
     st.session_state.chatbot_initialized = True
     st.session_state.chat_log = []
-    st.session_state.chat_log.append({"role": "assistant", "content": "Hey! Wie kann ich dir helfen?"})
+    st.session_state.chat_log.append({"role": "assistant", "content": "Hey! Wie kann ich helfen?"})
 
 st.image("logo.png", width=300)
 
