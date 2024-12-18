@@ -18,41 +18,18 @@ if "chatbot_initialized" not in st.session_state:
 
 st.image("logo.png", width=300)
 
-# Sidebar mit Mikrofon-Button
-with st.sidebar:
-    st.markdown("### Optionen")
+# Chatverlauf und Mikrofon-Button in einem Container
+with st.container():
+    # Chat-Nachrichten anzeigen
+    for message in st.session_state.chat_log:
+        with st.chat_message(message["role"]):
+            st.markdown(message["content"])
+
+    # Mikrofon-Button unter dem Chatverlauf
     if st.button("🎤 Mikrofon", help="Sprachaufnahme starten"):
         st.info("Mikrofon-Button geklickt! Hier könnte die Aufnahme gestartet werden.")
 
-# Callback-Funktion für das Senden der Nachricht
-def send_user_message():
-    user_message = st.session_state.user_input.strip()
-    if user_message:
-        # 1. Benutzer-Nachricht zum Chat-Verlauf hinzufügen
-        st.session_state.chat_log.append({"role": "user", "content": user_message})
-
-        # Zeige einen Spinner während der Bot-Antwort generiert wird
-        with st.spinner("Bitte warten..."):
-            # 2. Chatbot-Antwort generieren
-            bot_response = send_message(
-                st.session_state.client,
-                st.session_state.session,
-                st.session_state.thread,
-                st.session_state.vector_store_id,
-                user_message,
-            )
-
-        # 3. Antwort des Chatbots zum Chat-Verlauf hinzufügen
-        st.session_state.chat_log.append({"role": "assistant", "content": bot_response})
-
-        # 4. Eingabefeld leeren
-        st.session_state.user_input = ""
-
-# Chat-Nachrichten anzeigen
-for message in st.session_state.chat_log:
-    with st.chat_message(message["role"]):
-        st.markdown(message["content"])
-
+# Eingabefeld am unteren Ende
 if user_input := st.chat_input("Schreiben Sie Ihre Nachricht:"):
     # Benutzer-Nachricht anzeigen
     with st.chat_message("user"):
@@ -74,6 +51,6 @@ if user_input := st.chat_input("Schreiben Sie Ihre Nachricht:"):
                 bot_response = partial_response  # Aktualisierte Nachricht
                 response_placeholder.markdown(bot_response)  # Live-Update der Nachricht
 
-    # Bot-Antwort zum Chat-Verlauf hinzufügen
+    # Chat-Verlauf aktualisieren
     st.session_state.chat_log.append({"role": "user", "content": user_input})
     st.session_state.chat_log.append({"role": "assistant", "content": bot_response})
