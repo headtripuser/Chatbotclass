@@ -64,27 +64,27 @@ if user_input := st.chat_input("Schreiben Sie Ihre Nachricht:"):
 
 st.button("I am a button")
 
-    st.session_state.chat_log.append({"role": "user", "content": user_input})
-    st.session_state.chat_log.append({"role": "assistant", "content": bot_response})
+st.session_state.chat_log.append({"role": "user", "content": user_input})
+st.session_state.chat_log.append({"role": "assistant", "content": bot_response})
 
     # Mikrofon-Button erneut rendern
-    mic_button_container.markdown("""
-    <style>
-    .mic-button {
-        position: fixed;
-        bottom: 50px;
-        right: 550px;
-        background-color: #ff4b4b;
-        color: white;
-        border: none;
-        border-radius: 50%;
-        width: 50px;
-        height: 50px;
-        font-size: 20px;
-        cursor: pointer;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        z-index: 9999;
-    }
-    </style>
-    <button class="mic-button">🎤</button>
-    """, unsafe_allow_html=True)
+mic_button_container.markdown("""
+<style>
+.mic-button {
+    position: fixed;
+    bottom: 50px;
+    right: 550px;
+    background-color: #ff4b4b;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 9999;
+}
+</style>
+<button class="mic-button">🎤</button>
+""", unsafe_allow_html=True)
