@@ -73,7 +73,7 @@ mic_button_container.markdown("""
 .mic-button {
     position: fixed;
     bottom: 50px;
-    right: 550px;
+    right: 28%;
     background-color: #ff4b4b;
     color: white;
     border: none;
@@ -89,4 +89,3 @@ mic_button_container.markdown("""
 <button class="mic-button">🎤</button>
 """, unsafe_allow_html=True)
 
-st.button("I am a button")
