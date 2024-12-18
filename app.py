@@ -62,10 +62,10 @@ if user_input := st.chat_input("Schreiben Sie Ihre Nachricht:"):
                 bot_response = partial_response
                 response_placeholder.markdown(bot_response)
 
-st.button("I am a button")
 
-st.session_state.chat_log.append({"role": "user", "content": user_input})
-st.session_state.chat_log.append({"role": "assistant", "content": bot_response})
+
+    st.session_state.chat_log.append({"role": "user", "content": user_input})
+    st.session_state.chat_log.append({"role": "assistant", "content": bot_response})
 
     # Mikrofon-Button erneut rendern
 mic_button_container.markdown("""
@@ -88,3 +88,5 @@ mic_button_container.markdown("""
 </style>
 <button class="mic-button">🎤</button>
 """, unsafe_allow_html=True)
+
+st.button("I am a button")
