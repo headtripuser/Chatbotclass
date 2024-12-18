@@ -18,11 +18,6 @@ if "chatbot_initialized" not in st.session_state:
 
 st.image("logo.png", width=300)
 
-# Sidebar mit Mikrofon-Button
-with st.sidebar:
-    st.markdown("### Optionen")
-    if st.button("🎤 Mikrofon starten", help="Sprachaufnahme starten"):
-        st.info("Mikrofon-Button geklickt! Hier könnte die Aufnahme gestartet werden.")
 
 # Callback-Funktion für das Senden der Nachricht
 def send_user_message():
@@ -48,6 +43,19 @@ def send_user_message():
         # 4. Eingabefeld leeren
         st.session_state.user_input = ""
 
+
+# Sidebar für den Mikrofon-Button
+with st.sidebar:
+    st.markdown("### Optionen")
+
+    # Platzhalter für Abstand
+    for _ in range(15):  # Erhöhe die Zahl für mehr Abstand
+        st.empty()
+
+    mic_clicked = st.button("🎤 Mikrofon", help="Sprachaufnahme starten")
+    if mic_clicked:
+        st.info("Mikrofon-Button geklickt! Hier könnte die Aufnahme gestartet werden.")
+
 # Chat-Nachrichten anzeigen
 for message in st.session_state.chat_log:
     with st.chat_message(message["role"]):
@@ -65,11 +73,11 @@ if user_input := st.chat_input("Schreiben Sie Ihre Nachricht:"):
 
         with st.spinner("Der Assistent denkt nach..."):  # Spinner bis zum Start des Streams
             for partial_response in send_message(
-                st.session_state.client,
-                st.session_state.session,
-                st.session_state.thread,
-                st.session_state.vector_store_id,
-                user_input,
+                    st.session_state.client,
+                    st.session_state.session,
+                    st.session_state.thread,
+                    st.session_state.vector_store_id,
+                    user_input,
             ):
                 bot_response = partial_response  # Aktualisierte Nachricht
                 response_placeholder.markdown(bot_response)  # Live-Update der Nachricht
