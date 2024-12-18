@@ -62,6 +62,8 @@ if user_input := st.chat_input("Schreiben Sie Ihre Nachricht:"):
                 bot_response = partial_response
                 response_placeholder.markdown(bot_response)
 
+st.button("I am a button")
+
     st.session_state.chat_log.append({"role": "user", "content": user_input})
     st.session_state.chat_log.append({"role": "assistant", "content": bot_response})
 
