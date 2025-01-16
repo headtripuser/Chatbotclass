@@ -21,7 +21,7 @@ class MyEventHandler(AssistantEventHandler):
             delta_content = event.data.delta.content
             for item in delta_content:
                 if item.type == "text":  # Direkt auf das Attribut zugreifen
-                    self.latest_response += item.text.value
+                    self.latest_response = "Dies ist ein Test"
                     message_text = item.text.value  # Zugriff auf das 'value'-Attribut von TextDelta
                     print(item.text.value, end="", flush=True)  # Streamt die Nachricht fließend ohne Zeilenumbruch
 
