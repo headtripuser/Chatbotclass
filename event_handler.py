@@ -11,7 +11,7 @@ class MyEventHandler(AssistantEventHandler):
         self.session = session
         self.assistant_id = assistant_id
         self.vector_store_id = vector_store_id
-        self.latest_response = "check"
+        self.latest_response = ""
         self.last_function_called = None  # Speichert die zuletzt aufgerufene Funktion
         self.last_function_result = None  # Speichert das Ergebnis der letzten Funktion
 

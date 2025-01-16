@@ -12,8 +12,8 @@ def initialize_chatbot():
     vector_store_id = "vs_56heQwFcoW60pFQuPCX48O8l"
     thread = client.beta.threads.create()
     return client, session, thread, vector_store_id
+
 def send_message(client, session, thread, vector_store_id, user_message):
-    """Sendet eine Nachricht an den Chatbot und empfängt die Antwort stückweise."""
     client.beta.threads.messages.create(
         thread_id=thread.id,
         role="user",
@@ -35,9 +35,7 @@ def send_message(client, session, thread, vector_store_id, user_message):
                     if item.type == "text":
                         text_chunk = item.text.value
                         complete_response += text_chunk
-                        yield text_chunk
 
-    # Füge self.latest_response hinzu, wenn der Stream beendet ist
     if handler.latest_response:
         complete_response += f"\n{handler.latest_response}"
 
