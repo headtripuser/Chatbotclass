@@ -52,7 +52,12 @@ class MyEventHandler(AssistantEventHandler):
             # Logik basierend auf der Funktion
             if tool_call.function.name == "create_article_and_json":
                 self.last_function_called = "create_article_and_json"
-                self.latest_response = "Dies ist ein Test"
+                if title and content:
+                    print(f"[DEBUG] Erstelle neuen Artikel: {title} mit Inhalt: {content}")
+                    result = create_article(title, content, self.session, self.client, self.vector_store_id)
+                    self.latest_response = f"Der Artikel {title} wurde mit folgendem Content: {content} erstellt."
+                else:
+                    result = {"success": False, "message": "Titel oder Inhalt fehlen für die Erstellung des Artikels."}
 
             elif tool_call.function.name == "edit_article":
                 self.last_function_called = "edit_article"
