@@ -11,6 +11,7 @@ if "chatbot_initialized" not in st.session_state:
     st.session_state.vector_store_id = vector_store_id
     st.session_state.chatbot_initialized = True
     st.session_state.chat_log = []  # Initialisiere den Chat-Verlauf
+    st.session_state.assistant_id = "asst_KR9HhWRsQXJy63NTFwTVnUe8"
 
     # **Startnachricht hinzufügen***
     st.session_state.chat_log.append(
