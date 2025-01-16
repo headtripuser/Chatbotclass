@@ -11,7 +11,7 @@ class MyEventHandler(AssistantEventHandler):
         self.session = session
         self.assistant_id = assistant_id
         self.vector_store_id = vector_store_id
-        self.latest_response = ""
+        self.latest_response = "Check"
         self.last_function_called = None  # Speichert die zuletzt aufgerufene Funktion
         self.last_function_result = None  # Speichert das Ergebnis der letzten Funktion
 
@@ -21,7 +21,7 @@ class MyEventHandler(AssistantEventHandler):
             delta_content = event.data.delta.content
             for item in delta_content:
                 if item.type == "text":  # Direkt auf das Attribut zugreifen
-                    self.latest_response = "Dies ist ein Test"
+                    self.latest_response += item.text.value
                     message_text = item.text.value  # Zugriff auf das 'value'-Attribut von TextDelta
                     print(item.text.value, end="", flush=True)  # Streamt die Nachricht fließend ohne Zeilenumbruch
 
