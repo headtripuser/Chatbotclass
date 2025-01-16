@@ -1,5 +1,6 @@
 import streamlit as st
 from main import initialize_chatbot, send_message  # Importiere deine Funktionen
+from event_handler import MyEventHandler
 
 # Initialisiere den Chatbot (nur einmal)
 if "chatbot_initialized" not in st.session_state:
@@ -28,28 +29,41 @@ with st.container():
     # Mikrofon-Button unter dem Chatverlauf
     if st.button("🎤 Mikrofon", help="Sprachaufnahme starten"):
         st.info("Mikrofon-Button geklickt! Hier könnte die Aufnahme gestartet werden.")
-
-# Eingabefeld am unteren Ende
 if user_input := st.chat_input("Schreiben Sie Ihre Nachricht:"):
     # Benutzer-Nachricht anzeigen
     with st.chat_message("user"):
         st.markdown(user_input)
 
-    # Spinner anzeigen, bis die erste Antwort kommt
-    with st.chat_message("assistant"):  # Bot Avatar bleibt hier
-        response_placeholder = st.empty()  # Platzhalter für die gestreamte Nachricht
-        bot_response = "Dies ist ein Test."  # Speichert die gestreamte Nachricht
+    # Spinner anzeigen, während der Chatbot antwortet
+    with st.chat_message("assistant"):
+        response_placeholder = st.empty()
+        bot_response = ""
 
-        with st.spinner("Der Assistent denkt nach..."):  # Spinner bis zum Start des Streams
+        # Event-Handler erstellen
+        handler = MyEventHandler(
+            st.session_state.client,
+            st.session_state.thread.id,
+            st.session_state.session,
+            st.session_state.assistant_id,
+            st.session_state.vector_store_id
+        )
+
+        with st.spinner("Der Assistent denkt nach..."):
             for partial_response in send_message(
                 st.session_state.client,
                 st.session_state.session,
                 st.session_state.thread,
                 st.session_state.vector_store_id,
                 user_input,
+                handler
             ):
-                bot_response = "Dies ist ein Test"  # Aktualisierte Nachricht
-                response_placeholder.markdown(bot_response)  # Live-Update der Nachricht
+                bot_response = partial_response
+                response_placeholder.markdown(bot_response)
+
+        # Prüfen, ob `self.latest_response` genutzt werden soll
+        if not bot_response and handler.latest_response:
+            bot_response = handler.latest_response
+            response_placeholder.markdown(bot_response)
 
     # Chat-Verlauf aktualisieren
     st.session_state.chat_log.append({"role": "user", "content": user_input})
