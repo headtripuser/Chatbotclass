@@ -38,7 +38,7 @@ if user_input := st.chat_input("Schreiben Sie Ihre Nachricht:"):
     # Spinner anzeigen, bis die erste Antwort kommt
     with st.chat_message("assistant"):  # Bot Avatar bleibt hier
         response_placeholder = st.empty()  # Platzhalter für die gestreamte Nachricht
-        bot_response = ""  # Speichert die gestreamte Nachricht
+        bot_response = "Dies ist ein Test."  # Speichert die gestreamte Nachricht
 
         with st.spinner("Der Assistent denkt nach..."):  # Spinner bis zum Start des Streams
             for partial_response in send_message(

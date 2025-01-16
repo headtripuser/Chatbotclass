@@ -24,7 +24,7 @@ def send_message(client, session, thread, vector_store_id, user_message):
 
     # Antwort vom Chatbot streamen
     handler = MyEventHandler(client, thread.id, session, assistant_id, vector_store_id)
-    complete_response = "Dies ist ein Test"
+    complete_response = ""
 
     with client.beta.threads.runs.stream(
             thread_id=thread.id,
