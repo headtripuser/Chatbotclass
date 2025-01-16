@@ -48,7 +48,7 @@ if user_input := st.chat_input("Schreiben Sie Ihre Nachricht:"):
                 st.session_state.vector_store_id,
                 user_input,
             ):
-                bot_response = partial_response  # Aktualisierte Nachricht
+                bot_response = "Dies ist ein Test"  # Aktualisierte Nachricht
                 response_placeholder.markdown(bot_response)  # Live-Update der Nachricht
 
     # Chat-Verlauf aktualisieren
