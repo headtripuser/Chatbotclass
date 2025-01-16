@@ -42,4 +42,10 @@ def send_message(client, session, thread, vector_store_id, user_message):
                         complete_response += text_chunk
                         yield complete_response  # Text stückweise zurückgeben
 
+    if handler.latest_response:
+        complete_response += f"\n{handler.latest_response}"
+
+    return complete_response
+
+
 
