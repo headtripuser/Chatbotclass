@@ -1,6 +1,6 @@
 from openai import AssistantEventHandler
 import json
-from wiki_utills import edit_article, create_article, delete_article
+from .wiki_utills import edit_article, create_article, delete_article
 
 
 class MyEventHandler(AssistantEventHandler):

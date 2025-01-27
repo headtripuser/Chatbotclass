@@ -1,6 +1,6 @@
 import requests
 import json
-from vector_utills import upload_to_vector_store
+from .vector_utills import upload_to_vector_store
 import os
 import time
 

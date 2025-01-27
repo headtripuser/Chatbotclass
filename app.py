@@ -1,6 +1,6 @@
 import streamlit as st
-from main import initialize_chatbot, send_message  # Importiere deine Funktionen
-from event_handler import MyEventHandler
+from headtripbot.main import initialize_chatbot, send_message  # Importiere deine Funktionen
+from headtripbot.event_handler import MyEventHandler
 
 # Initialisiere den Chatbot (nur einmal)
 if "chatbot_initialized" not in st.session_state:

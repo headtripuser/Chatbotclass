@@ -1,8 +1,7 @@
 from openai import OpenAI
-from event_handler import MyEventHandler
-from wiki_utills import login_to_wiki
+from .wiki_utills import login_to_wiki
 import os
-from config import assistant_id
+from .config import assistant_id
 
 
 def initialize_chatbot():
