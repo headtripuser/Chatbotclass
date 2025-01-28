@@ -2,27 +2,38 @@
 
 import json
 from channels.generic.websocket import AsyncWebsocketConsumer
+from .main import send_message
+from .event_handler import MyEventHandler
+
+# Initialisiere den Chatbot einmalig
+from .main import initialize_chatbot
+client, session, thread, vector_store_id = initialize_chatbot()
+assistant_id = "asst_KR9HhWRsQXJy63NTFwTVnUe8"
+
 
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
+        print("WebSocket connected!")
         await self.accept()
 
     async def disconnect(self, close_code):
-        pass
+        print(f"WebSocket disconnected with code: {close_code}")
 
     async def receive(self, text_data):
-        text_data_json = json.loads(text_data)
-        message = text_data_json['message']
+        print(f"Message received: {text_data}")
+        data = json.loads(text_data)
+        user_message = data.get("message", "")
 
-        # Hier kannst du die Nachricht an den Chatbot senden
-        # und die Antwort streamen
-        for chunk in self.generate_response(message):
-            await self.send(text_data=json.dumps({
-                'message': chunk
-            }))
+        # Erstelle den Event-Handler
+        handler = MyEventHandler(client, thread.id, session, assistant_id, vector_store_id)
 
-    def generate_response(self, message):
-        # Simuliere das Streaming von Antworten
-        response = f"Du hast gesagt: {message}"
-        for word in response.split():
-            yield word + " "
+        # Starte die asynchrone Verarbeitung der Bot-Antwort
+        await self.stream_bot_response(user_message, handler)
+
+    async def stream_bot_response(self, user_message, handler):
+        """
+        Streamt die Bot-Antwort stückweise an den WebSocket-Client.
+        """
+        for partial_response in send_message(client, session, thread, vector_store_id, user_message, handler):
+            # Sende jeden Chunk sofort über den WebSocket
+            await self.send(text_data=json.dumps({"message": partial_response}))
