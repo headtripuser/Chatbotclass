@@ -6,7 +6,7 @@ from channels.routing import ProtocolTypeRouter, URLRouter
 from channels.auth import AuthMiddlewareStack
 from headtripbot import routing  # Importiere das Routing der Chatbot-App
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'chatbot.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'chatbotclass.settings')
 
 application = ProtocolTypeRouter({
     "http": get_asgi_application(),
