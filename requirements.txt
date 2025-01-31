@@ -1,3 +1,5 @@
-streamlit
+django
 openai
 requests
+gunicorn
+whitenoise

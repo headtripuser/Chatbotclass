@@ -5,13 +5,14 @@ body {
 }
 
 #userInput {
-    resize: none; /* Deaktiviert das manuelle Größenändern */
-    overflow-y: auto; /* Scrollbar bei Bedarf */
-    height: auto; /* Automatische Höhe */
-    min-height: 40px; /* Mindesthöhe */
-    max-height: 120px; /* Maximale Höhe, bevor eine Scrollbar erscheint */
-    line-height: 1.5; /* Bessere Lesbarkeit bei mehrzeiligen Texten */
+    resize: none; /* Deaktiviert manuelles Ziehen */
+    overflow-y: hidden; /* Kein unnötiger Scrollbalken */
+    min-height: 40px; /* Standardhöhe */
+    max-height: 150px; /* Begrenzung der Höhe */
+    line-height: 1.5; /* Lesbarkeit verbessern */
+    padding: 10px; /* Etwas Abstand zum Rand */
 }
+
 
 /* Weiße Umrandung beim Fokussieren des Eingabefelds */
 #userInput:focus {
@@ -31,10 +32,37 @@ body {
     box-shadow: 0 1px 2px 0 rgba(255, 255, 255, 0.1);  /* Heller Schatten */
 }
 
+@keyframes dots {
+    0% { content: "."; }
+    33% { content: ".."; }
+    66% { content: "..."; }
+}
+
+.typing-indicator::after {
+    content: ".";
+    display: inline-block;
+    animation: dots 1.5s steps(3, end) infinite;
+    font-size: 18px;
+    color: #e0e0e0;
+}
+
+#loading-indicator {
+    display: none; /* Standardmäßig versteckt */
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+
+
+
+
+
 .message.my-message {
     display: flex; /* Flexbox für horizontale Ausrichtung */
     align-items: flex-start; /* Avatar und Text oben ausrichten */
     margin-bottom: 15px; /* Abstand zwischen Nachrichten */
+    padding-left: 0 !important;
+    margin-left: 0 !important;
 }
 
 /* Avatar-Bubble */
@@ -49,14 +77,14 @@ body {
     justify-content: center; /* Horizontal zentrieren */
     font-size: 14px; /* Schriftgröße */
     font-weight: bold; /* Fetter Text */
-    margin-right: 10px; /* Abstand zum Text */
+    margin-left: 0;
     flex-shrink: 0; /* Verhindert, dass der Avatar schrumpft */
 }
 
 /* Text der Bot-Nachricht */
 .message-text {
     color: #e0e0e0; /* Hellgrauer Text */
-    padding: 10px 15px; /* Innenabstand */
+    padding:  15px; /* Innenabstand */
     word-wrap: break-word; /* Lange Wörter umbrechen */
 }
 
@@ -75,12 +103,16 @@ body {
     width: 200px;  /* Größe des Logos */
 }
 
+.logo img {
+    margin-left: -4px;
+}
+
 .input-group .form-control::placeholder {
     color: #ffffff;  /* Weißer Platzhaltertext */
     opacity: 1;      /* Volle Deckkraft */
 }
 .chat-history {
-    height: 70vh;
+    height: 75vh;
     overflow-y: auto;  /* Wichtig für die vertikale Scrollbar */
     position: relative; /* Hilft bei der Positionierung der Nachrichten */
 }
@@ -127,7 +159,7 @@ body {
 
 .chat .chat-history .message-data-time {
     color: #b0b0b0;  /* Hellgraue Uhrzeit */
-    padding-left: 6px;
+
 }
 
 .chat .chat-history .message {
@@ -140,13 +172,14 @@ body {
     position: relative;
 }
 
-.chat .chat-history .my-message {
-
+.my-message {
+    padding-left: 0px;
 }
+
 
 .chat .chat-history .other-message {
     background: #3a3a3a;  /* Dunklere Farbe für Bot-Nachrichten */
-    text-align: right;
+    text-align: left;
 }
 
 .chat .chat-message {
@@ -199,6 +232,24 @@ body {
 .input-group .btn-primary:active .fa-send {
     color: #000000; /* Schwarzes Icon */
 }
+
+#record-button {
+    background-color: #3a3a3a;
+    width: 45px; /* Einheitliche Breite */
+    height: 45px; /* Einheitliche Höhe */
+    display: flex;
+    border: 1px solid #333;
+    align-items: center; /* Icon vertikal zentrieren */
+    justify-content: center; /* Icon horizontal zentrieren */
+    font-size: 20px; /* Einheitliche Icon-Größe */
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+#record-button:hover {
+    background-color: white; /* Dunkleres Blau beim Hover */
+    color: black;
+}
+
 
 .float-right {
     float: right;
