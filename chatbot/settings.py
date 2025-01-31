@@ -28,7 +28,7 @@ SECRET_KEY = 'DenSecretKeyErrätKeinerhaha!$23'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["127.0.0.1", "localhost", "chatbotclass.onrender.com"]
+ALLOWED_HOSTS = ["127.0.0.1", "localhost", "chatbotclass.onrender.com", "chatbot.onrender.com"]
 
 
 
