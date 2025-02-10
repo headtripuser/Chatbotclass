@@ -5,5 +5,5 @@ from django.http import HttpResponse
 
 
 urlpatterns = [
-    path('chat/', include('headtripbot.urls')),
+    path('', include('headtripbot.urls')),
 ]
