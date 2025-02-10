@@ -132,7 +132,7 @@ function sendMessage() {
     chatHistory.scrollTop = chatHistory.scrollHeight;
 
     // **Nachricht an den Server senden**
-    fetch('/chat/', {
+    fetch('/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
