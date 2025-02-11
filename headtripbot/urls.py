@@ -1,8 +1,9 @@
-# headtripbot/urls.py
 from django.urls import path
-from . import views
+from .views import login_view, logout_view, chatbot_view, chat
 
 urlpatterns = [
-    path('', views.chat, name='chat'),  # Startseite der App direkt erreichbar
-    path('transcribe/', views.transcribe_audio, name='transcribe'),
+    path("", login_view, name="login"),  # Startseite → Login-Seite
+    path("logout/", logout_view, name="logout"),  # Logout-URL
+    path("chatbot/", chatbot_view, name="chatbot"),  # Chatbot-Übersichtsseite
+    path("chat/", chat, name="chat"),  # Chat-Interaktion
 ]
