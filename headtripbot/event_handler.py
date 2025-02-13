@@ -67,7 +67,7 @@ class MyEventHandler(AssistantEventHandler):
                 if title and user_request:
                     print(f"[DEBUG] Bearbeite Artikel: {title} mit Anfrage: {user_request}")
                     result = edit_article(title, user_request, self.session, self.client, self.vector_store_id)
-                    self.latest_response = f"Der Artikel {title} wurde erfolgreich bearbeitet."
+                    self.latest_response = f'Der Artikel {title} wurde erfolgreich bearbeitet. Hier ist der Link zum Mediawiki: <a href"{wiki_base_url}{title}" target="_blank">{title}</a>'
                 else:
                     result = {"success": False,
                               "message": "Titel oder Benutzeranfrage fehlen für die Bearbeitung des Artikels."}
