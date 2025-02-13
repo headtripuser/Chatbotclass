@@ -7,33 +7,31 @@ from .event_handler import MyEventHandler
 import openai
 import os
 from .wiki_utills import login_to_wiki  # MediaWiki-Login nutzen
+import requests
 
 # Initialisiere den Chatbot (wird nur einmal ausgeführt)
-client, session, thread, vector_store_id = initialize_chatbot()
+client, thread, vector_store_id = initialize_chatbot()
 assistant_id = "asst_KR9HhWRsQXJy63NTFwTVnUe8"
 
 # OpenAI API-Key
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
-
 def chat(request):
-    """Verarbeitet Textnachrichten für den Chatbot."""
-    wiki_session = request.session.get("wiki_session")  # Abrufen der gespeicherten Wiki-Session
+    wiki_session_data = request.session.get("wiki_session")
 
-    if not wiki_session:
-        return redirect("login")  # Falls kein Login, weiter zur Anmeldung
+    if not wiki_session_data:
+        return redirect("login")  # Falls keine Session existiert, zurück zur Anmeldung
+
+    # Neue `requests.Session()` erstellen und Cookies setzen
+    wiki_session = requests.Session()
+    wiki_session.cookies.update(wiki_session_data["cookies"])  # ✅ Jetzt ist es ein echtes `requests.Session()`
 
     if request.method == 'POST':
         data = json.loads(request.body)
         user_input = data.get('message')
 
-        # Debugging: Prüfe, ob die Session korrekt geladen wird
-        print("🔍 Chat-Session:", wiki_session)
+        handler = MyEventHandler(client, thread.id, wiki_session, assistant_id, vector_store_id)
 
-        # Event-Handler erstellen
-        handler = MyEventHandler(client, thread.id, session, assistant_id, vector_store_id)
-
-        # Chatbot-Nachricht senden und Antwort empfangen
         bot_response = ""
         for partial_response in send_message(client, wiki_session, thread, vector_store_id, user_input, handler):
             bot_response = partial_response
@@ -55,7 +53,7 @@ def login_view(request):
 
         if session:
             # Speichere die Session in der Django-Session
-            request.session["wiki_session"] = session.cookies.get_dict()
+            request.session["wiki_session"] = {"cookies": session.cookies.get_dict()}
             print("Gespeicherte Session:", request.session.get("wiki_session"))
             return redirect("chat")  # Weiterleitung zur Chat-Seite
         else:

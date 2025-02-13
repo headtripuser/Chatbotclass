@@ -7,10 +7,10 @@ from .config import assistant_id
 def initialize_chatbot():
     """Initialisiert den OpenAI-Client und die Wiki-Session."""
     client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
-    session = login_to_wiki("Matze", "Head$ripyeah")  # Beispiel-Login-Daten
+    # session = login_to_wiki("Matze", "Head$ripyeah")  # Beispiel-Login-Daten
     vector_store_id = "vs_56heQwFcoW60pFQuPCX48O8l"
     thread = client.beta.threads.create()
-    return client, session, thread, vector_store_id
+    return client, thread, vector_store_id
 
 def send_message(client, session, thread, vector_store_id, user_message, handler):
     """Sendet eine Nachricht an den Chatbot und empfängt die Antwort stückweise."""
