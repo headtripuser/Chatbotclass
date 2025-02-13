@@ -2,6 +2,8 @@ from openai import AssistantEventHandler
 import json
 from .wiki_utills import edit_article, create_article, delete_article
 
+wiki_base_url = "https://wiki.head-trip.de/index.php?title="
+
 
 class MyEventHandler(AssistantEventHandler):
     def __init__(self, client, thread_id, session, assistant_id, vector_store_id):
@@ -55,7 +57,8 @@ class MyEventHandler(AssistantEventHandler):
                 if title and content:
                     print(f"[DEBUG] Erstelle neuen Artikel: {title} mit Inhalt: {content}")
                     result = create_article(title, content, self.session, self.client, self.vector_store_id)
-                    self.latest_response = f"Der Artikel {title} wurde mit folgendem Content: \n  {content} \n erstellt."
+                    self.latest_response = f'Der Artikel "{title}" wurde mit folgendem Inhalt erstellt:\n\n{content}\n\nHier ist der Link zum Mediawiki: <a href="{wiki_base_url}{title}" target="_blank">{title}</a>'
+
                 else:
                     result = {"success": False, "message": "Titel oder Inhalt fehlen für die Erstellung des Artikels."}
 
