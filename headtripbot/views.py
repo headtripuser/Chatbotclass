@@ -84,12 +84,13 @@ def transcribe_audio(request):
             audio_file = request.FILES['audio']
             print(f"📂 Erhaltene Datei: {audio_file.name}, Typ: {audio_file.content_type}, Größe: {audio_file.size} Bytes")
 
-            # 🔹 **Erkennen, ob das Format kompatibel ist**
-            if not any(audio_file.name.endswith(ext) for ext in ['.flac', '.m4a', '.mp3', '.mp4', '.mpeg', '.mpga', '.oga', '.ogg', '.wav']):
+            # 🔹 **Erkennen, ob das Format kompatibel ist** (Basierend auf `content_type`)
+            allowed_types = ["audio/m4a", "audio/mp4", "audio/mp3", "audio/wav"]
+            if audio_file.content_type not in allowed_types:
                 return JsonResponse({'error': True, 'error_message': "Ungültiges Audioformat. Bitte MP3, M4A oder WAV verwenden."}, status=400)
 
-            # 🔹 **Speichern der Datei mit korrekt kompatibler Endung**
-            suffix = ".m4a" if "m4a" in audio_file.content_type else ".mp3"
+            # 🔹 **Speichern der Datei mit kompatibler Endung**
+            suffix = ".m4a" if "m4a" in audio_file.content_type or "mp4" in audio_file.content_type else ".mp3"
             with tempfile.NamedTemporaryFile(delete=False, suffix=suffix) as temp_audio:
                 temp_audio.write(audio_file.read())
                 temp_audio_path = temp_audio.name
