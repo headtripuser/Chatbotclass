@@ -4,6 +4,12 @@ const recordButton = document.getElementById('record-button');
 const chatInput = document.getElementById('userInput');
 const status = document.getElementById('record-status');
 
+// Prüft, ob `audio/webm;codecs=opus` unterstützt wird, sonst Fallback auf `audio/mp4`
+const isWebMSupported = MediaRecorder.isTypeSupported("audio/webm;codecs=opus");
+const mimeType = isWebMSupported ? "audio/webm;codecs=opus" : "audio/mp4";
+
+console.log("🎙️ Verwendetes Aufnahmeformat:", mimeType);
+
 // **🔄 Button zwischen Mikrofon & Papierflieger wechseln**
 chatInput.addEventListener('input', () => {
     if (chatInput.value.trim() === "") {
@@ -33,18 +39,16 @@ chatInput.addEventListener("keydown", function (event) {
     }
 });
 
-
-// **🎤 Aufnahme starten oder stoppen**
 async function startRecording() {
     if (mediaRecorder && mediaRecorder.state === "recording") {
         mediaRecorder.stop();
-        recordButton.innerHTML = '<i class="fa fa-microphone"></i>'; // 🎤 Zurück zu Mikrofon
+        recordButton.innerHTML = '<i class="fa fa-microphone"></i>';
         return;
     }
 
     try {
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        mediaRecorder = new MediaRecorder(stream);
+        mediaRecorder = new MediaRecorder(stream, { mimeType: mimeType });
         audioChunks = [];
 
         mediaRecorder.ondataavailable = (event) => {
@@ -52,35 +56,49 @@ async function startRecording() {
         };
 
         mediaRecorder.onstop = async () => {
-    let audioBlob = new Blob(audioChunks, { type: 'audio/m4a' });
+            let audioBlob = new Blob(audioChunks, { type: mimeType });
 
-    console.log("📂 Gesendeter Datei-Typ:", audioBlob.type);
-    console.log("📂 Größe der Datei:", audioBlob.size);
+            console.log("📂 Gesendeter Datei-Typ:", audioBlob.type);
+            console.log("📂 Größe der Datei:", audioBlob.size);
 
-    const formData = new FormData();
-    formData.append('audio', audioBlob);
-    formData.append('csrfmiddlewaretoken', getCSRFToken());
+            const formData = new FormData();
+            formData.append("audio", audioBlob);
+            formData.append("csrfmiddlewaretoken", getCSRFToken());
 
-    try {
-        const response = await fetch('/transcribe/', {
-            method: 'POST',
-            body: formData
-        });
+            try {
+                const response = await fetch("/transcribe/", {
+                    method: "POST",
+                    body: formData
+                });
 
-        const data = await response.json();
+                const data = await response.json();
+                console.log("✅ Whisper Antwort:", data);
 
-        if (data.transcription) {
-            console.log("✅ Transkription erfolgreich:", data.transcription);
-            chatInput.value = data.transcription;
-        } else {
-            console.error("❌ Transkription fehlgeschlagen:", data.error_message || "Unbekannter Fehler");
-            displayErrorMessage(data.error_message || "Fehler bei der Transkription.");
-        }
+                if (data.transcription) {
+                    chatInput.value = data.transcription;
+                } else {
+                    alert("❌ Fehler: " + data.error);
+                }
 
-    } catch (error) {
-        console.error("❌ Fehler beim Senden der Audio-Datei:", error);
-        displayErrorMessage("Fehler bei der Transkription: Verbindung fehlgeschlagen.");
+            } catch (error) {
+                console.error("❌ Fehler beim Hochladen:", error);
+                alert("Fehler bei der Transkription.");
+            }
+
+            recordButton.innerHTML = '<i class="fa fa-microphone"></i>';
+        };
+
+        mediaRecorder.start();
+        recordButton.innerHTML = '<i class="fa fa-stop"></i>';
+
+    } catch (err) {
+        console.error("🚨 Fehler beim Mikrofonzugriff:", err);
     }
+}
+
+function getCSRFToken() {
+    return document.querySelector("[name=csrfmiddlewaretoken]").value;
+}
 
     // 🔄 Button aktualisieren basierend auf Eingabefeld
     if (chatInput.value.trim() !== "") {

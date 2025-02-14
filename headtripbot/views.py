@@ -9,6 +9,8 @@ import os
 from .wiki_utills import login_to_wiki  # MediaWiki-Login nutzen
 import requests
 import traceback
+import subprocess
+
 
 # Initialisiere den Chatbot (wird nur einmal ausgeführt)
 client, thread, vector_store_id = initialize_chatbot()
@@ -77,25 +79,39 @@ def chatbot_view(request):
 
 import traceback  # Zum detaillierten Loggen von Fehlern
 
+
+def convert_audio(input_path, output_path):
+    """Konvertiert eine Audiodatei in MP3, falls nötig"""
+    try:
+        command = ["ffmpeg", "-i", input_path, "-c:a", "libmp3lame", output_path]
+        subprocess.run(command, check=True)
+        return True
+    except Exception as e:
+        print(f"❌ Fehler bei der Konvertierung: {e}")
+        return False
+
+
 def transcribe_audio(request):
     """Verarbeitet die Audiodatei und gibt die Transkription zurück."""
-    if request.method == 'POST' and 'audio' in request.FILES:
+    if request.method == "POST" and "audio" in request.FILES:
         try:
-            audio_file = request.FILES['audio']
+            audio_file = request.FILES["audio"]
             print(f"📂 Erhaltene Datei: {audio_file.name}, Typ: {audio_file.content_type}, Größe: {audio_file.size} Bytes")
 
-            # 🔹 **Erkennen, ob das Format kompatibel ist** (Basierend auf `content_type`)
-            allowed_types = ["audio/m4a", "audio/mp4", "audio/mp3", "audio/wav"]
-            if audio_file.content_type not in allowed_types:
-                return JsonResponse({'error': True, 'error_message': "Ungültiges Audioformat. Bitte MP3, M4A oder WAV verwenden."}, status=400)
+            supported_formats = ['.flac', '.m4a', '.mp3', '.mp4', '.mpeg', '.mpga', '.oga', '.ogg', '.wav', '.webm']
+            is_supported = any(audio_file.name.endswith(ext) for ext in supported_formats)
 
-            # 🔹 **Speichern der Datei mit kompatibler Endung**
-            suffix = ".m4a" if "m4a" in audio_file.content_type or "mp4" in audio_file.content_type else ".mp3"
-            with tempfile.NamedTemporaryFile(delete=False, suffix=suffix) as temp_audio:
+            with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3" if not is_supported else os.path.splitext(audio_file.name)[1]) as temp_audio:
                 temp_audio.write(audio_file.read())
                 temp_audio_path = temp_audio.name
 
-            # 🔹 **Öffne Datei für Whisper**
+            if not is_supported:
+                converted_path = temp_audio_path.replace(".mp3", ".mp3")
+                if convert_audio(temp_audio_path, converted_path):
+                    temp_audio_path = converted_path
+                else:
+                    return JsonResponse({'error': "Fehler bei der Audio-Konvertierung"}, status=400)
+
             with open(temp_audio_path, "rb") as file_for_whisper:
                 transcription = openai.audio.transcriptions.create(
                     model="whisper-1",
@@ -104,13 +120,11 @@ def transcribe_audio(request):
                 )
 
             print(f"📝 Transkription: {transcription.text}")
-            return JsonResponse({'transcription': transcription.text})
+            return JsonResponse({"transcription": transcription.text})
 
         except Exception as e:
             error_message = f"Fehler bei der Transkription: {str(e)}"
             print(f"❌ {error_message}")
-            return JsonResponse({'error': True, 'error_message': error_message}, status=500)
+            return JsonResponse({"error": error_message}, status=500)
 
-    print("❌ Ungültige Anfrage - Kein Audio erhalten")
-    return JsonResponse({'error': True, 'error_message': "Ungültige Anfrage"}, status=400)
-
+    return JsonResponse({"error": "Ungültige Anfrage"}, status=400)
