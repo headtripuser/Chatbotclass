@@ -8,6 +8,7 @@ import openai
 import os
 from .wiki_utills import login_to_wiki  # MediaWiki-Login nutzen
 import requests
+import traceback
 
 # Initialisiere den Chatbot (wird nur einmal ausgeführt)
 client, thread, vector_store_id = initialize_chatbot()
@@ -74,12 +75,14 @@ def chatbot_view(request):
     return render(request, "chatbot.html")
 
 
+import traceback  # Zum detaillierten Loggen von Fehlern
+
 def transcribe_audio(request):
     """Verarbeitet die Audiodatei und gibt die Transkription zurück."""
     if request.method == 'POST' and 'audio' in request.FILES:
         try:
             audio_file = request.FILES['audio']
-            print(f"📂 Erhaltene Datei: {audio_file.name}, Typ: {audio_file.content_type}")
+            print(f"📂 Erhaltene Datei: {audio_file.name}, Typ: {audio_file.content_type}, Größe: {audio_file.size} Bytes")
 
             # Audiodatei in temporäre Datei speichern
             with tempfile.NamedTemporaryFile(delete=False, suffix=".webm") as temp_audio:
@@ -98,8 +101,10 @@ def transcribe_audio(request):
             return JsonResponse({'transcription': transcription.text})
 
         except Exception as e:
-            print(f"❌ Fehler bei der Transkription: {str(e)}")
-            return JsonResponse({'error': f'Fehler bei der Transkription: {str(e)}'}, status=500)
+            error_message = f"Fehler bei der Transkription: {str(e)}"
+            print(f"❌ {error_message}")
+            traceback.print_exc()  # Gibt den gesamten Fehler-Stacktrace aus
+            return JsonResponse({'error': True, 'error_message': error_message}, status=500)
 
     print("❌ Ungültige Anfrage - Kein Audio erhalten")
-    return JsonResponse({'error': 'Ungültige Anfrage'}, status=400)
+    return JsonResponse({'error': True, 'error_message': "Ungültige Anfrage"}, status=400)
