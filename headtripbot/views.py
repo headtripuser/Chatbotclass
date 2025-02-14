@@ -84,12 +84,17 @@ def transcribe_audio(request):
             audio_file = request.FILES['audio']
             print(f"📂 Erhaltene Datei: {audio_file.name}, Typ: {audio_file.content_type}, Größe: {audio_file.size} Bytes")
 
-            # Audiodatei in temporäre Datei speichern
-            with tempfile.NamedTemporaryFile(delete=False, suffix=".webm") as temp_audio:
+            # 🔹 **Erkennen, ob das Format kompatibel ist**
+            if not any(audio_file.name.endswith(ext) for ext in ['.flac', '.m4a', '.mp3', '.mp4', '.mpeg', '.mpga', '.oga', '.ogg', '.wav']):
+                return JsonResponse({'error': True, 'error_message': "Ungültiges Audioformat. Bitte MP3, M4A oder WAV verwenden."}, status=400)
+
+            # 🔹 **Speichern der Datei mit korrekt kompatibler Endung**
+            suffix = ".m4a" if "m4a" in audio_file.content_type else ".mp3"
+            with tempfile.NamedTemporaryFile(delete=False, suffix=suffix) as temp_audio:
                 temp_audio.write(audio_file.read())
                 temp_audio_path = temp_audio.name
 
-            # Datei für Whisper öffnen
+            # 🔹 **Öffne Datei für Whisper**
             with open(temp_audio_path, "rb") as file_for_whisper:
                 transcription = openai.audio.transcriptions.create(
                     model="whisper-1",
@@ -103,8 +108,8 @@ def transcribe_audio(request):
         except Exception as e:
             error_message = f"Fehler bei der Transkription: {str(e)}"
             print(f"❌ {error_message}")
-            traceback.print_exc()  # Gibt den gesamten Fehler-Stacktrace aus
             return JsonResponse({'error': True, 'error_message': error_message}, status=500)
 
     print("❌ Ungültige Anfrage - Kein Audio erhalten")
     return JsonResponse({'error': True, 'error_message': "Ungültige Anfrage"}, status=400)
+

@@ -51,8 +51,8 @@ async function startRecording() {
             audioChunks.push(event.data);
         };
 
-        mediaRecorder.onstop = async () => {
-    const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+    mediaRecorder.onstop = async () => {
+    let audioBlob = new Blob(audioChunks, { type: 'audio/m4a' });
 
     console.log("📂 Gesendeter Datei-Typ:", audioBlob.type);
     console.log("📂 Größe der Datei:", audioBlob.size);
@@ -92,26 +92,6 @@ async function startRecording() {
     }
 };
 
-// 💡 Funktion, um die Fehlermeldung direkt im Chat-Feld anzuzeigen
-function displayErrorMessage(message) {
-    const messages = document.getElementById('messages');
-    const chatHistory = document.querySelector('.chat-history');
-
-    const errorMessage = document.createElement("li");
-    errorMessage.classList.add("clearfix", "bot-message");
-    errorMessage.innerHTML = `
-        <div class="message-data">
-            <div class="message my-message">
-                <div class="bot-avatar">ht</div>
-                <div class="message-text" style="color: red;">
-                    ❌ ${message}
-                </div>
-            </div>
-        </div>
-    `;
-    messages.appendChild(errorMessage);
-    chatHistory.scrollTop = chatHistory.scrollHeight;
-}
 
 
 
