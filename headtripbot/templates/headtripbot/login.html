@@ -4,69 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #121212;
-            color: #e0e0e0;
-        }
-        .login-container {
-            background: #1e1e1e;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
-            width: 20rem;
-        }
-        .login-container h2 {
-            text-align: center;
-        }
-        input[type="text"], input[type="password"] {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #121212;
-            border-radius: 5px;
-            background: #2c2c2c;
-            box-sizing: border-box; /* Verhindert, dass Padding die Breite vergrößert */
-            color: white;
-        }
-
-                /* Stellt sicher, dass Autofill das Design nicht überschreibt */
-        input:-webkit-autofill {
-            background-color: #2c2c2c !important;
-            color: white !important;
-            -webkit-text-fill-color: white !important;
-            transition: background-color 5000s ease-in-out 0s;
-        }
-
-        /* Fokus-Style bleibt konsistent */
-        input:focus {
-            outline: none;
-            background: #2c2c2c;
-            color: white;
-        }
-
-        button {
-            width: 100%;
-            padding: 10px;
-            background-color: #121212;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        button:hover {
-            background: #2c2c2c;
-        }
-        .error {
-            color: red;
-            text-align: center;
-        }
-    </style>
+    <link rel="stylesheet" href="{% static 'headtripbot/css/login.css' %}">
 </head>
 <body>
     <div class="login-container">
