@@ -78,7 +78,7 @@ async function startRecording() {
             chatInput.value = data.transcription;
         } else {
             console.error("❌ Transkription fehlgeschlagen:", data.error_message || "Unbekannter Fehler");
-            displayErrorMessage(data.error_message || "Fehler bei der Transkription.");
+            displayErrorMessage(data.error_message || "Fehler bei der Transkription. Dies ist ein Test");
         }
 
     } catch (error) {
