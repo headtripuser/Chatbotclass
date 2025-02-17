@@ -33,6 +33,28 @@ chatInput.addEventListener("keydown", function (event) {
     }
 });
 
+function adjustLayout() {
+  const chatHistory = document.querySelector('.chat-history');
+  const headerHeight = document.querySelector('.chat-header').offsetHeight;
+  const inputHeight = document.querySelector('.chat-message').offsetHeight;
+  const windowHeight = window.innerHeight;
+
+  chatHistory.style.height = `${windowHeight - headerHeight - inputHeight - 20}px`;
+  chatHistory.scrollTop = chatHistory.scrollHeight;
+}
+
+// Initial und bei Größenänderung anpassen
+window.addEventListener('resize', adjustLayout);
+window.addEventListener('orientationchange', adjustLayout);
+adjustLayout();
+
+// Bei Fokus auf das Eingabefeld
+document.getElementById('userInput').addEventListener('focus', () => {
+  setTimeout(() => {
+    adjustLayout();
+    window.scrollTo(0, document.body.scrollHeight);
+  }, 300);
+});
 
 // **🎤 Aufnahme starten oder stoppen**
 async function startRecording() {

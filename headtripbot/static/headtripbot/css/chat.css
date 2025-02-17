@@ -88,6 +88,8 @@ body {
     word-wrap: break-word; /* Lange Wörter umbrechen */
 }
 
+
+
 .chat-app .chat {
     margin-left: 0;
     border-left: none;
@@ -112,9 +114,8 @@ body {
     opacity: 1;      /* Volle Deckkraft */
 }
 .chat-history {
-    height: 75vh;
-    overflow-y: auto;  /* Wichtig für die vertikale Scrollbar */
-    position: relative; /* Hilft bei der Positionierung der Nachrichten */
+  flex: 1;
+  min-height: 0; /* Wichtig für korrekte Skalierung in Flex-Containern */
 }
 
 /* Optional: Stilisierung der Scrollbar für moderne Browser */
@@ -180,6 +181,15 @@ body {
 .chat .chat-history .other-message {
     background: #3a3a3a;  /* Dunklere Farbe für Bot-Nachrichten */
     text-align: left;
+
+}
+
+.chat-message {
+  position: sticky;
+  bottom: 0;
+  background: #1e1e1e;
+  z-index: 1000;
+  padding: 15px !important;
 }
 
 .chat .chat-message {
@@ -269,6 +279,20 @@ body {
     .chat-app .chat {
         margin: 0;
     }
+    body {
+    margin: 0;
+    overflow: hidden;
+  }
+
+  .container, .row, .col-lg-10 {
+    height: 100%;
+    padding: 0;
+  }
+
+  .card {
+    border-radius: 0;
+    height: 100% !important;
+  }
     .chat-app .chat .chat-header {
         border-radius: 0.55rem 0.55rem 0 0;
     }
