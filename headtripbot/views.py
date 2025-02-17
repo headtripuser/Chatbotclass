@@ -81,12 +81,18 @@ def transcribe_audio(request):
             audio_file = request.FILES['audio']
             print(f"📂 Erhaltene Datei: {audio_file.name}, Typ: {audio_file.content_type}")
 
-            # Direkte Verarbeitung ohne temporäre Datei
-            transcription = openai.audio.transcriptions.create(
-                model="whisper-1",
-                file=audio_file,
-                language="de"
-            )
+            # Audiodatei in temporäre Datei speichern
+            with tempfile.NamedTemporaryFile(delete=False, suffix=".webm") as temp_audio:
+                temp_audio.write(audio_file.read())
+                temp_audio_path = temp_audio.name
+
+            # Datei für Whisper öffnen
+            with open(temp_audio_path, "rb") as file_for_whisper:
+                transcription = openai.audio.transcriptions.create(
+                    model="whisper-1",
+                    file=file_for_whisper,
+                    language="de"
+                )
 
             print(f"📝 Transkription: {transcription.text}")
             return JsonResponse({'transcription': transcription.text})
