@@ -275,11 +275,8 @@ body {
     height: 0;
 }
 
-@media only screen and (max-width: 767px) {
-    .chat-app .chat {
-        margin: 0;
-    }
-    body {
+@media (max-width: 767px) {
+  body {
     margin: 0;
     overflow: hidden;
   }
@@ -293,13 +290,6 @@ body {
     border-radius: 0;
     height: 100% !important;
   }
-    .chat-app .chat .chat-header {
-        border-radius: 0.55rem 0.55rem 0 0;
-    }
-    .chat-app .chat-history {
-        height: 60vh;
-        overflow-x: auto;
-    }
 }
 
 @media only screen and (min-width: 768px) and (max-width: 992px) {
