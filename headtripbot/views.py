@@ -98,7 +98,6 @@ def transcribe_audio(request):
             return JsonResponse({'transcription': transcription.text})
 
         except Exception as e:
-            print(f"❌ Fehler bei der Transkription: {str(e)}")
             return JsonResponse({'error': f'Fehler bei der Transkription: {str(e)}'}, status=500)
 
     print("❌ Ungültige Anfrage - Kein Audio erhalten")
