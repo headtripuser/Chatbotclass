@@ -77,14 +77,15 @@ async function startRecording() {
             console.log("✅ Transkription erfolgreich:", data.transcription);
             chatInput.value = data.transcription;
         } else {
-            console.error("❌ Transkription fehlgeschlagen:", data.error_message || "Unbekannter Fehler");
-            displayErrorMessage(data.error_message);
+            let errorMsg = data.error_message || data.error || "Unbekannter Fehler";
+            console.error("❌ Transkription fehlgeschlagen:", errorMsg);
+            displayErrorMessage(errorMsg);
         }
-
     } catch (error) {
         console.error("❌ Fehler beim Senden der Audio-Datei:", error);
         displayErrorMessage("Fehler bei der Transkription: Verbindung fehlgeschlagen.");
     }
+
 
     // 🔄 Button aktualisieren basierend auf Eingabefeld
     if (chatInput.value.trim() !== "") {

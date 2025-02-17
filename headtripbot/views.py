@@ -73,6 +73,9 @@ def chatbot_view(request):
         return redirect("login")  # Falls kein Login, zurück zur Anmeldung
     return render(request, "chatbot.html")
 
+import tempfile
+import openai
+from django.http import JsonResponse
 
 def transcribe_audio(request):
     """Verarbeitet die Audiodatei und gibt die Transkription zurück."""
@@ -81,12 +84,18 @@ def transcribe_audio(request):
             audio_file = request.FILES['audio']
             print(f"📂 Erhaltene Datei: {audio_file.name}, Typ: {audio_file.content_type}")
 
-            # Audiodatei in temporäre Datei speichern
+            # ✅ MIME-Type prüfen
+            allowed_mime_types = ['audio/mp3', 'audio/mpeg', 'audio/mp4', 'audio/mpga', 'audio/m4a', 'audio/wav', 'audio/webm']
+            if audio_file.content_type not in allowed_mime_types:
+                print(f"⚠️ Ungültiger MIME-Typ: {audio_file.content_type}")
+                return JsonResponse({'error_message': 'Ungültiges Audioformat! Bitte MP3, WAV oder M4A verwenden.'}, status=400)
+
+            # 📂 Audiodatei in temporäre Datei speichern
             with tempfile.NamedTemporaryFile(delete=False, suffix=".webm") as temp_audio:
                 temp_audio.write(audio_file.read())
                 temp_audio_path = temp_audio.name
 
-            # Datei für Whisper öffnen
+            # 📝 Datei für Whisper öffnen
             with open(temp_audio_path, "rb") as file_for_whisper:
                 transcription = openai.audio.transcriptions.create(
                     model="whisper-1",
@@ -94,11 +103,13 @@ def transcribe_audio(request):
                     language="de"
                 )
 
-            print(f"📝 Transkription: {transcription.text}")
+            print(f"✅ Erfolgreiche Transkription: {transcription.text}")
             return JsonResponse({'transcription': transcription.text})
 
         except Exception as e:
-            return JsonResponse({'error': f'Fehler bei der Transkription: {str(e)}'}, status=500)
+            print(f"❌ Fehler bei der Transkription: {str(e)}")
+            return JsonResponse({'error_message': f'Fehler bei der Transkription: {str(e)}'}, status=500)
 
     print("❌ Ungültige Anfrage - Kein Audio erhalten")
-    return JsonResponse({'error': 'Ungültige Anfrage'}, status=400)
+    return JsonResponse({'error_message': 'Ungültige Anfrage - keine Audiodatei erhalten'}, status=400)
+
