@@ -51,15 +51,19 @@ async function startRecording() {
             audioChunks.push(event.data);
         };
 
-        mediaRecorder.onstop = async () => {
-    let audioBlob = new Blob(audioChunks, { type: 'audio/m4a' });
+        // Ändere den onstop-Handler des MediaRecorders
+    mediaRecorder.onstop = async () => {
+        // Verwende den tatsächlichen MIME-Type des MediaRecorders
+        const mimeType = mediaRecorder.mimeType || 'audio/webm';
+        let audioBlob = new Blob(audioChunks, { type: mimeType });
 
-    console.log("📂 Gesendeter Datei-Typ:", audioBlob.type);
-    console.log("📂 Größe der Datei:", audioBlob.size);
+        console.log("📂 Gesendeter Datei-Typ:", audioBlob.type);
+        console.log("📂 Größe der Datei:", audioBlob.size);
 
-    const formData = new FormData();
-    formData.append('audio', audioBlob);
-    formData.append('csrfmiddlewaretoken', getCSRFToken());
+        const formData = new FormData();
+        formData.append('audio', audioBlob, 'recording.webm'); // Dateiname mit Erweiterung
+        formData.append('csrfmiddlewaretoken', getCSRFToken());
+
 
     try {
         const response = await fetch('/transcribe/', {
