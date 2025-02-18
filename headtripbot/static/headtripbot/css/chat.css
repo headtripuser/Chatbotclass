@@ -113,10 +113,13 @@ body {
     color: #ffffff;  /* Weißer Platzhaltertext */
     opacity: 1;      /* Volle Deckkraft */
 }
+
 .chat-history {
-  flex: 1;
-  min-height: 0; /* Wichtig für korrekte Skalierung in Flex-Containern */
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
 }
+
 
 /* Optional: Stilisierung der Scrollbar für moderne Browser */
 .chat-history::-webkit-scrollbar {
