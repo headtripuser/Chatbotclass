@@ -16,11 +16,15 @@ chatInput.addEventListener('input', () => {
     }
 });
 
-// **🔄 Automatische Anpassung der Textarea-Höhe**
-function adjustTextareaHeight() {
-    chatInput.style.height = "40px"; // Zurücksetzen, um richtige Höhe zu berechnen
-    chatInput.style.height = Math.min(chatInput.scrollHeight, 150) + "px"; // Begrenzung auf max. 150px
+function setViewportHeight() {
+    let vh = window.innerHeight * 0.01; // 1vh entspricht 1% der tatsächlichen Höhe
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
 }
+
+// Initial setzen und bei Größenänderung anpassen
+setViewportHeight();
+window.addEventListener('resize', setViewportHeight);
+
 
 // **📌 Event Listener für Eingaben im Textfeld**
 chatInput.addEventListener("input", adjustTextareaHeight);
@@ -62,7 +66,9 @@ async function startRecording() {
         // Aufnahme beenden
         mediaRecorder.stop();
         isRecording = false;
-        chatInput.placeholder = "Enter text here..."; // Placeholder zurücksetzen
+        if (chatInput.value.trim() === "") {
+            chatInput.placeholder = "Enter text here..."; // Nur zurücksetzen, wenn nichts im Textfeld steht
+        }
         recordButton.innerHTML = '<i class="fa fa-microphone"></i>'; // 🎤 Mikrofon-Icon
         return;
     }
@@ -73,7 +79,7 @@ async function startRecording() {
         audioChunks = [];
         isRecording = true;
 
-        chatInput.placeholder = "Bitte jetzt sprechen . . . erneutes Drücken beendet die Eingabe."; // Ändere den Placeholder-Text
+        chatInput.placeholder = "Bitte jetzt sprechen..."; // Ändere den Placeholder-Text
 
         mediaRecorder.ondataavailable = (event) => {
             audioChunks.push(event.data);
@@ -81,7 +87,6 @@ async function startRecording() {
 
         mediaRecorder.onstop = async () => {
             isRecording = false;
-            chatInput.placeholder = "Enter text here..."; // Placeholder nach Aufnahme zurücksetzen
 
             const mimeType = mediaRecorder.mimeType || 'audio/webm';
             let audioBlob = new Blob(audioChunks, { type: mimeType });
@@ -112,6 +117,11 @@ async function startRecording() {
             } catch (error) {
                 console.error("❌ Fehler beim Senden der Audio-Datei:", error);
                 displayErrorMessage("Fehler bei der Transkription: Verbindung fehlgeschlagen.");
+            }
+
+            // **Placeholder nur zurücksetzen, wenn das Eingabefeld leer ist**
+            if (chatInput.value.trim() === "") {
+                chatInput.placeholder = "Enter text here...";
             }
 
             if (chatInput.value.trim() !== "") {
