@@ -128,9 +128,8 @@ html, body {
 }
 
 .chat-history {
-    display: flex;
-    flex-direction: column;
-    overflow-y: auto;
+    flex: 1;
+    overflow-y: auto; /* Scrollbare Chat-History */
     padding-bottom: 60px; /* Platz für das Eingabefeld */
 }
 
@@ -206,11 +205,13 @@ html, body {
 }
 
 .chat-message {
-  position: sticky;
-  bottom: 0;
-  background: #1e1e1e;
-  z-index: 1000;
-  padding: 15px !important;
+    position: fixed; /* Fixiert das Eingabefeld */
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: #1e1e1e;
+    padding: 10px;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
 }
 
 .chat .chat-message {
