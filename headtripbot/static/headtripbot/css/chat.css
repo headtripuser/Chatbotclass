@@ -205,16 +205,12 @@ html, body {
     position: absolute;
 }
 
-
 .chat-message {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background: #1e1e1e;
-    padding: 10px;
-    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
-    transition: bottom 0.3s ease-in-out;
+  position: sticky;
+  bottom: 0;
+  background: #1e1e1e;
+  z-index: 1000;
+  padding: 15px !important;
 }
 
 .chat .chat-message {
