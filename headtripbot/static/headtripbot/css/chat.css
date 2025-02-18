@@ -16,6 +16,10 @@ html, body {
     overflow: hidden;
 }
 
+.ios-fix .chat-message {
+    position: absolute;
+}
+
 
 #userInput {
     resize: none; /* Deaktiviert manuelles Ziehen */

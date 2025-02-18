@@ -120,11 +120,11 @@ async function startRecording() {
 };
 
 document.addEventListener('focusin', () => {
-    document.body.classList.add('keyboard-open');
+    document.body.classList.add('ios-fix');
 });
 
 document.addEventListener('focusout', () => {
-    document.body.classList.remove('keyboard-open');
+    document.body.classList.remove('ios-fix');
 });
 
 // 💡 Funktion, um die Fehlermeldung direkt im Chat-Feld anzuzeigen
