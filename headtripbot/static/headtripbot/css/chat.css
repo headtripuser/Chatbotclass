@@ -202,9 +202,7 @@ html, body {
 
 }
 
-.keyboard-open .chat-message {
-    position: absolute;
-}
+
 
 .chat-message {
   position: sticky;

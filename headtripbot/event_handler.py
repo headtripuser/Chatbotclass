@@ -41,24 +41,28 @@ class MyEventHandler(AssistantEventHandler):
         print(self.assistant_id)
         tool_outputs = []
 
+        # Standard-Initialisierung für `result`
+        result = {"success": False, "message": "Keine gültige Aktion erkannt."}
+
         for tool_call in data.required_action.submit_tool_outputs.tool_calls:
-            # Die Argumente aus dem Tool-Call extrahieren
             arguments = json.loads(tool_call.function.arguments)
             title = arguments.get("title", "")
-            content = arguments.get("content", "")  # Für create_article_and_json
-            user_request = arguments.get("user_request", "")  # Für edit_article
+            content = arguments.get("content", "")
+            user_request = arguments.get("user_request", "")
+
+            # **Fix: Titel automatisch mit großem Anfangsbuchstaben**
+            if title:
+                title = title[:1].upper() + title[1:]
 
             print(
                 f"[DEBUG] Tool-Call: {tool_call.function.name}, für Title: {title}, Content: {content}, User Request: {user_request}")
 
-            # Logik basierend auf der Funktion
             if tool_call.function.name == "create_article_and_json":
                 self.last_function_called = "create_article_and_json"
                 if title and content:
                     print(f"[DEBUG] Erstelle neuen Artikel: {title} mit Inhalt: {content}")
                     result = create_article(title, content, self.session, self.client, self.vector_store_id)
                     self.latest_response = f'Der Artikel "{title}" wurde mit folgendem Inhalt erstellt:\n\n{content}\n\nHier ist der Link zum Mediawiki: <a href="{wiki_base_url}{title}" target="_blank">{title}</a>'
-
                 else:
                     result = {"success": False, "message": "Titel oder Inhalt fehlen für die Erstellung des Artikels."}
 
@@ -67,7 +71,7 @@ class MyEventHandler(AssistantEventHandler):
                 if title and user_request:
                     print(f"[DEBUG] Bearbeite Artikel: {title} mit Anfrage: {user_request}")
                     result = edit_article(title, user_request, self.session, self.client, self.vector_store_id)
-                    self.latest_response = f'Der Artikel {title} wurde erfolgreich bearbeitet. Hier ist der Link zum Mediawiki: <a href"{wiki_base_url}{title}" target="_blank">{title}</a>'
+                    self.latest_response = f'Der Artikel {title} wurde erfolgreich bearbeitet. Hier ist der Link zum Mediawiki: <a href="{wiki_base_url}{title}" target="_blank">{title}</a>'
                 else:
                     result = {"success": False,
                               "message": "Titel oder Benutzeranfrage fehlen für die Bearbeitung des Artikels."}
@@ -77,7 +81,11 @@ class MyEventHandler(AssistantEventHandler):
                 if title:
                     print(f"Lösche Artikel mit dem Titel {title}...")
                     result = delete_article(title, self.client, self.vector_store_id, self.session)
-                    self.latest_response = f"Der Artikel {title} wurde erfolgreich gelöscht."
+
+                    if result.get("success"):
+                        self.latest_response = f"Der Artikel '{title}' wurde erfolgreich gelöscht."
+                    else:
+                        self.latest_response = f"Fehler beim Löschen des Artikels '{title}': {result.get('message')}"
                 else:
                     result = {"success": False, "message": "Titel fehlt für die Löschung des Artikels."}
 
@@ -85,13 +93,9 @@ class MyEventHandler(AssistantEventHandler):
                 self.last_function_called = "unknown"
                 result = {"success": False, "message": f"Unbekannte Funktion: {tool_call.function.name}"}
 
-            # Speichere das Ergebnis der letzten Funktion
             self.last_function_result = result
-
-            # Tool-Output sammeln
             tool_outputs.append({"tool_call_id": tool_call.id, "output": json.dumps(result)})
 
-        # Tool-Outputs abschicken
         if tool_outputs:
             self.submit_tool_outputs(tool_outputs, run_id)
 

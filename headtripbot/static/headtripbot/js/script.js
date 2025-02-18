@@ -1,5 +1,6 @@
 let mediaRecorder;
 let audioChunks = [];
+let isRecording = false; // Variable zur Verfolgung des Aufnahmezustands
 const recordButton = document.getElementById('record-button');
 const chatInput = document.getElementById('userInput');
 const status = document.getElementById('record-status');
@@ -23,7 +24,6 @@ function adjustTextareaHeight() {
 
 // **📌 Event Listener für Eingaben im Textfeld**
 chatInput.addEventListener("input", adjustTextareaHeight);
-
 
 // **🔄 Enter-Taste für Nachrichtensenden aktivieren**
 chatInput.addEventListener("keydown", function (event) {
@@ -58,9 +58,12 @@ document.getElementById('userInput').addEventListener('focus', () => {
 
 // **🎤 Aufnahme starten oder stoppen**
 async function startRecording() {
-    if (mediaRecorder && mediaRecorder.state === "recording") {
+    if (isRecording) {
+        // Aufnahme beenden
         mediaRecorder.stop();
-        recordButton.innerHTML = '<i class="fa fa-microphone"></i>'; // 🎤 Zurück zu Mikrofon
+        isRecording = false;
+        chatInput.placeholder = "Enter text here..."; // Placeholder zurücksetzen
+        recordButton.innerHTML = '<i class="fa fa-microphone"></i>'; // 🎤 Mikrofon-Icon
         return;
     }
 
@@ -68,58 +71,66 @@ async function startRecording() {
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
         mediaRecorder = new MediaRecorder(stream);
         audioChunks = [];
+        isRecording = true;
+
+        chatInput.placeholder = "Bitte jetzt sprechen . . . erneutes Drücken beendet die Eingabe."; // Ändere den Placeholder-Text
 
         mediaRecorder.ondataavailable = (event) => {
             audioChunks.push(event.data);
         };
 
-        // Ändere den onstop-Handler des MediaRecorders
-    mediaRecorder.onstop = async () => {
-        // Verwende den tatsächlichen MIME-Type des MediaRecorders
-        const mimeType = mediaRecorder.mimeType || 'audio/webm';
-        let audioBlob = new Blob(audioChunks, { type: mimeType });
+        mediaRecorder.onstop = async () => {
+            isRecording = false;
+            chatInput.placeholder = "Enter text here..."; // Placeholder nach Aufnahme zurücksetzen
 
-        console.log("📂 Gesendeter Datei-Typ:", audioBlob.type);
-        console.log("📂 Größe der Datei:", audioBlob.size);
+            const mimeType = mediaRecorder.mimeType || 'audio/webm';
+            let audioBlob = new Blob(audioChunks, { type: mimeType });
 
-        const formData = new FormData();
-        formData.append('audio', audioBlob, 'recording.webm'); // Dateiname mit Erweiterung
-        formData.append('csrfmiddlewaretoken', getCSRFToken());
+            console.log("📂 Gesendeter Datei-Typ:", audioBlob.type);
+            console.log("📂 Größe der Datei:", audioBlob.size);
 
+            const formData = new FormData();
+            formData.append('audio', audioBlob, 'recording.webm');
+            formData.append('csrfmiddlewaretoken', getCSRFToken());
 
-    try {
-        const response = await fetch('/transcribe/', {
-            method: 'POST',
-            body: formData
-        });
+            try {
+                const response = await fetch('/transcribe/', {
+                    method: 'POST',
+                    body: formData
+                });
 
-        const data = await response.json();
+                const data = await response.json();
 
-        if (data.transcription) {
-            console.log("✅ Transkription erfolgreich:", data.transcription);
-            chatInput.value = data.transcription;
-        } else {
-            let errorMsg = data.error_message || data.error || "Unbekannter Fehler";
-            console.error("❌ Transkription fehlgeschlagen:", errorMsg);
-            displayErrorMessage(errorMsg);
-        }
-    } catch (error) {
-        console.error("❌ Fehler beim Senden der Audio-Datei:", error);
-        displayErrorMessage("Fehler bei der Transkription: Verbindung fehlgeschlagen.");
+                if (data.transcription) {
+                    console.log("✅ Transkription erfolgreich:", data.transcription);
+                    chatInput.value = data.transcription; // Eingabetext mit der transkribierten Nachricht ersetzen
+                } else {
+                    let errorMsg = data.error_message || data.error || "Unbekannter Fehler";
+                    console.error("❌ Transkription fehlgeschlagen:", errorMsg);
+                    displayErrorMessage(errorMsg);
+                }
+            } catch (error) {
+                console.error("❌ Fehler beim Senden der Audio-Datei:", error);
+                displayErrorMessage("Fehler bei der Transkription: Verbindung fehlgeschlagen.");
+            }
+
+            if (chatInput.value.trim() !== "") {
+                recordButton.innerHTML = '<i class="fa fa-paper-plane"></i>'; // 📨 Papierflieger-Icon
+                recordButton.onclick = sendMessage;
+            } else {
+                recordButton.innerHTML = '<i class="fa fa-microphone"></i>'; // 🎤 Mikrofon-Icon
+                recordButton.onclick = startRecording;
+            }
+        };
+
+        mediaRecorder.start();
+        recordButton.innerHTML = '<i class="fa fa-stop"></i>'; // ⏹ Stop-Icon während Aufnahme
+
+    } catch (err) {
+        console.error("🚨 Fehler beim Mikrofonzugriff:", err);
+        status.textContent = "Mikrofonzugriff verweigert!";
     }
-
-
-    // 🔄 Button aktualisieren basierend auf Eingabefeld
-    if (chatInput.value.trim() !== "") {
-        recordButton.innerHTML = '<i class="fa fa-paper-plane"></i>'; // 📨 Papierflieger-Icon
-        recordButton.onclick = sendMessage;
-    } else {
-        recordButton.innerHTML = '<i class="fa fa-microphone"></i>'; // 🎤 Mikrofon-Icon
-        recordButton.onclick = startRecording;
-    }
-};
-
-
+}
 
 // 💡 Funktion, um die Fehlermeldung direkt im Chat-Feld anzuzeigen
 function displayErrorMessage(message) {
@@ -142,17 +153,6 @@ function displayErrorMessage(message) {
     chatHistory.scrollTop = chatHistory.scrollHeight;
 }
 
-
-
-        mediaRecorder.start();
-        recordButton.innerHTML = '<i class="fa fa-stop"></i>'; // ⏹ Stop-Icon während Aufnahme
-
-    } catch (err) {
-        console.error("🚨 Fehler beim Mikrofonzugriff:", err);
-        status.textContent = "Mikrofonzugriff verweigert!";
-    }
-}
-
 // **📨 Nachricht senden**
 function sendMessage() {
     const userInput = chatInput.value.trim();
@@ -170,22 +170,6 @@ function sendMessage() {
     messages.appendChild(userMessage);
     chatHistory.scrollTop = chatHistory.scrollHeight;
 
-    // **Ladeanimation direkt NACH der User-Nachricht einfügen**
-    const loadingIndicator = document.createElement("li");
-    loadingIndicator.classList.add("clearfix", "bot-message");
-    loadingIndicator.innerHTML = `
-        <div class="message-data">
-            <div class="message my-message">
-                <div class="bot-avatar">ht</div>
-                <div class="message-text">
-                    <span class="typing-indicator"></span>
-                </div>
-            </div>
-        </div>
-    `;
-    messages.appendChild(loadingIndicator);
-    chatHistory.scrollTop = chatHistory.scrollHeight;
-
     // **Nachricht an den Server senden**
     fetch('/chat/', {
         method: 'POST',
@@ -197,11 +181,7 @@ function sendMessage() {
     })
     .then(response => response.json())
     .then(data => {
-        // **Ladeanimation entfernen**
-        messages.removeChild(loadingIndicator);
-
         if (data.response) {
-            // **Bot-Nachricht nach der Animation einfügen**
             const botMessage = document.createElement("li");
             botMessage.classList.add("clearfix");
             botMessage.innerHTML = `
@@ -209,7 +189,6 @@ function sendMessage() {
                     <div class="message my-message">
                         <div class="bot-avatar">ht</div>
                         <div class="message-text">${data.response.replace(/\n/g, "<br>")}</div>
-
                     </div>
                 </div>
             `;
@@ -219,13 +198,11 @@ function sendMessage() {
     })
     .catch(error => {
         console.error("Fehler beim Senden der Nachricht:", error);
-        messages.removeChild(loadingIndicator);
     });
 
     chatInput.value = '';
     chatInput.dispatchEvent(new Event('input'));
 }
-
 
 // **📌 Standard-Button-Zuweisung (Mikrofon als Standard)**
 recordButton.innerHTML = '<i class="fa fa-microphone"></i>';

@@ -70,95 +70,53 @@ def get_article_content(title, session):
 
 def delete_article(dataname, client, vector_store_id, session):
     """
-    Löscht eine Datei aus dem Vector Store basierend auf ihrem Dateinamen, die generische Datei auf Openai und den
-    Artikel aus dem Mediawiki.
-
-    :param client: Der OpenAI-Client.
-    :param vector_store_id: Die ID des Vector Stores.
-    :param dataname: Der Name der Datei, die gelöscht werden soll.
-    :param session: Die aktuelle Session im Mediawiki.
-    :return: Das Ergebnis der Löschoperation.
+    Löscht eine Datei aus dem Vector Store, die generische Datei auf OpenAI und den Artikel aus dem MediaWiki.
     """
+    # **Fix: Erzwinge Großschreibung für Artikel**
+    dataname = dataname[:1].upper() + dataname[1:]
+
     existing_content = get_article_content(dataname, session)
 
     if existing_content is None:
-        print(f"Es existiert kein Artikel mit dem Titel: '{dataname}'.")
+        return {"success": False, "message": f"Es existiert kein Artikel mit dem Titel '{dataname}'."}
 
-    else:
+    try:
+        file_list = client.files.list()
+        dataname_with_ext = dataname + ".json"
+        file_id = next((file.id for file in file_list.data if file.filename == dataname_with_ext), None)
 
-        try:
+        if not file_id:
+            return {"success": False, "message": f"Es existiert keine Datei mit dem Namen '{dataname}' im OpenAI-Speicher."}
 
-            # Liste aller Dateien abrufen
-            file_list = client.files.list()
+        client.files.delete(file_id)
+        print(f"Datei '{dataname_with_ext}' wurde aus OpenAI gelöscht.")
 
-            dataname_with_ext = dataname + ".json"
-            # Nach der Datei mit dem passenden Namen suchen
-            file_id = None
-            for file in file_list.data:
-                if file.filename == dataname_with_ext:
-                    print("Es wurde ein passender Filename gefunden")
-                    file_id = file.id
-                    break
-            print(f"Die gefundene File_id lautet: {file_id}")
+        response = client.beta.vector_stores.files.delete(
+            vector_store_id=vector_store_id,
+            file_id=file_id
+        )
+        print(f"'{dataname}' wurde erfolgreich aus dem Vector Store entfernt.")
 
-            if not file_id:
-                print(f"Es existiert leider keine Datei mit dem Namen: '{dataname}'")
+        if os.path.exists(dataname_with_ext):
+            os.remove(dataname_with_ext)
+            print(f"Lokale Datei '{dataname_with_ext}' wurde erfolgreich gelöscht.")
 
+        delete_token_response = session.get(api_url, params={"action": "query", "meta": "tokens", "type": "csrf", "format": "json"})
+        csrf_token = delete_token_response.json().get("query", {}).get("tokens", {}).get("csrftoken", None)
 
-            # Generische Datei löschen
-            client.files.delete(file_id)
-            print("Generische file-datei wurde gelöscht")
+        if not csrf_token:
+            return {"success": False, "message": "CSRF-Token konnte nicht abgerufen werden."}
 
-            # Datei aus dem Vector Store löschen
-            print(f"Lösche Datei '{dataname}' mit ID '{file_id}' aus dem Vector Store...")
-            response = client.beta.vector_stores.files.delete(
-                vector_store_id=vector_store_id,
-                file_id=file_id
-            )
+        delete_response = session.post(api_url, data={"action": "delete", "title": dataname, "token": csrf_token, "format": "json"})
 
-            print(f"{dataname} wurde erfolgreich aus dem vector store entfernt.")
-
-            if os.path.exists(dataname_with_ext):
-                os.remove(dataname_with_ext)
-                print(f"Lokale Datei '{dataname_with_ext}' wurde erfolgreich gelöscht.")
-
-            # Schritt 2: Artikel im MediaWiki löschen
-            # Lösch-Token abrufen
-            delete_token_params = {
-                "action": "query",
-                "meta": "tokens",
-                "type": "csrf",
-                "format": "json"
-            }
-
-            delete_token_response = session.get(api_url, params=delete_token_params)
-            csrf_token = delete_token_response.json().get("query", {}).get("tokens", {}).get("csrftoken", None)
-
-            if not csrf_token:
-                print("CSRF-Token konnte nicht abgerufen werden.")
-                return {"success": False, "message": "CSRF-Token nicht verfügbar."}
-
-            # Artikel löschen
-            delete_params = {
-                "action": "delete",
-                "title": dataname,
-                "token": csrf_token,
-                "format": "json"
-            }
-
-            delete_response = session.post(api_url, data=delete_params)
-
-            if delete_response.status_code == 200 and "error" not in delete_response.json():
-                print(f"Artikel '{dataname}' wurde erfolgreich aus dem MediaWiki gelöscht.")
-            else:
-                print(f"Fehler beim Löschen des Artikels: {delete_response.json()}")
-
+        if delete_response.status_code == 200 and "error" not in delete_response.json():
+            print(f"Artikel '{dataname}' wurde erfolgreich aus dem MediaWiki gelöscht.")
             return {"success": True, "message": f"Datei '{dataname}' und Artikel '{dataname}' wurden gelöscht."}
+        else:
+            return {"success": False, "message": f"Fehler beim Löschen des Artikels '{dataname}': {delete_response.json()}"}
 
-
-        except Exception as e:
-            print(f"Fehler beim Löschen der Datei oder des Artikels: {e}")
-            return {"success": False, "message": f"Fehler: {e}"}
+    except Exception as e:
+        return {"success": False, "message": f"Fehler beim Löschen: {str(e)}"}
 
 
 def create_article(title, content, session, client, vector_store_id):
