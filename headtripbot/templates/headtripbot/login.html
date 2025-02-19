@@ -9,7 +9,7 @@
 </head>
 <body>
     <div class="login-container">
-        <h2>Login</h2>
+        <img src="{% static 'headtripbot/images/logo.png' %}" alt="logo" class="logo">
         {% if error %}<p class="error">{{ error }}</p>{% endif %}
         <form method="POST">
             {% csrf_token %}

@@ -10,7 +10,7 @@
 
         .login-container {
             background: #1e1e1e;
-            padding: 20px;
+            padding: 2rem;
             border-radius: 5px;
             box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
             width: 20rem;
@@ -23,7 +23,7 @@
         input[type="text"], input[type="password"] {
             width: 100%;
             padding: 10px;
-            margin: 10px 0;
+            margin: 5px 0;
             border: 1px solid #121212;
             border-radius: 5px;
             background: #2c2c2c;
@@ -39,6 +39,16 @@
             transition: background-color 5000s ease-in-out 0s;
         }
 
+        .logo {
+            height: 30px;
+            width: auto;
+            display: block;
+            margin: 0 auto;
+            margin-bottom: 1rem;
+            margin-left: 1rem;
+
+        }
+
         /* Fokus-Style bleibt konsistent */
         input:focus {
             outline: none;
@@ -49,15 +59,21 @@
         button {
             width: 100%;
             padding: 10px;
-            background-color: #121212;
+            background: linear-gradient(90deg, rgba(2,79,65,1) 0%, rgba(218,245,15,1)  100%);
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 20px;
             cursor: pointer;
+            font-size: 16px; /* Optional für bessere Lesbarkeit */
+            font-weight: bold; /* Falls du den Text hervorheben möchtest */
+            transition: background 0.3s ease-in-out; /* Sanfter Übergang */
+            margin-top: 1rem;
+
+
         }
 
         button:hover {
-            background: #2c2c2c;
+
 
         }
         .error {
