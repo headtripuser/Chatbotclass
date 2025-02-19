@@ -132,7 +132,7 @@ function displayErrorMessage(message) {
     errorMessage.innerHTML = `
         <div class="message-data">
             <div class="message my-message">
-                <div class="bot-avatar">ht</div>
+                <div class="bot-avatar"></div>
                 <div class="message-text" style="color: red;">
                     ❌ ${message}
                 </div>
@@ -177,7 +177,7 @@ function sendMessage() {
     loadingIndicator.innerHTML = `
         <div class="message-data">
             <div class="message my-message">
-                <div class="bot-avatar">ht</div>
+                <div class="bot-avatar"></div>
                 <div class="message-text">
                     <span class="typing-indicator"></span>
                 </div>
@@ -208,7 +208,7 @@ function sendMessage() {
             botMessage.innerHTML = `
                 <div class="message-data">
                     <div class="message my-message">
-                        <div class="bot-avatar">ht</div>
+                        <div class="bot-avatar"></div>
                         <div class="message-text">${data.response.replace(/\n/g, "<br>")}</div>
 
                     </div>
