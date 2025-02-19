@@ -9,6 +9,7 @@ body {
 html, body {
     height: 100%;
     overflow: hidden; /* Kein Scrollen der gesamten Seite */
+    touch-action: manipulation;
 }
 
 .chat {
@@ -18,7 +19,12 @@ html, body {
     overflow: hidden;
 }
 
-
+/* Dynamische Anpassung für iOS */
+@supports (-webkit-touch-callout: none) {
+    .chat {
+        height: calc(100vh - env(safe-area-inset-bottom)); /* Berücksichtigt den Safari Safe Area */
+    }
+}
 
 
 #userInput {
