@@ -390,6 +390,11 @@ html, body {
 
 @media (max-width: 767px) {
 
+
+    html {
+    background:#1e1e1e;
+    }
+
   body {
     margin: 0;
     overflow: hidden;
