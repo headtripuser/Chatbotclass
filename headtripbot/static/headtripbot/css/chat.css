@@ -10,7 +10,7 @@ html, body {
     height: 100%;
     overflow: hidden; /* Kein Scrollen der gesamten Seite */
     touch-action: manipulation;
-    background: black;
+
 }
 
 .chat {
@@ -355,6 +355,8 @@ html, body {
   body {
     margin: 0;
     overflow: hidden;
+    background: black;
+    padding-bottom: env(safe-area-inset-bottom);
   }
 
   .container, .row, .col-lg-10 {
