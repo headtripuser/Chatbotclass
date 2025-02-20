@@ -393,7 +393,7 @@ html, body {
   body {
     margin: 0;
     overflow: hidden;
-    background: #121212;
+    background: white;
     padding-bottom: env(safe-area-inset-bottom);
     -webkit-overflow-scrolling: touch;
   }
@@ -403,10 +403,6 @@ html, body {
     padding: 0;
   }
 
-
-  .full-height {
-  height: calc(var(--vh, 1vh) * 100);
-}
 
 #userInput {
   .text-input {
