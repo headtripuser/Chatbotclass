@@ -387,40 +387,42 @@ html, body {
     clear: both;
     height: 0;
 }
-
 @media (max-width: 767px) {
 
-
-    html {
-    background:#1e1e1e;
-    }
-
-  body {
-    margin: 0;
-    overflow: hidden;
+html, body {
     background: #1e1e1e;
-    padding-bottom: env(safe-area-inset-bottom);
-    -webkit-overflow-scrolling: touch;
-  }
-
-  .container, .row, .col-lg-10 {
+    margin: 0;
     padding: 0;
-  }
-
-
-
-  .text-input {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding-bottom: env(safe-area-inset-bottom);
+    height: 100%;
+    overflow: hidden; /* Verhindert unerwünschtes Scrollen auf der gesamten Seite */
+    -webkit-overflow-scrolling: touch; /* Sanfteres Scrollen auf iOS */
 }
 
+.container {
+    height: 100vh; /* Volle Höhe nutzen */
+    display: flex;
+    flex-direction: column;
+}
 
+.chat-history {
+    flex: 1;
+    overflow-y: auto !important; /* Scrollbar aktivieren */
+    padding-bottom: 80px; /* Platz für das Eingabefeld */
+    max-height: calc(100vh - 100px); /* Verhindert, dass Nachrichten aus dem sichtbaren Bereich rutschen */
+}
+
+.text-input {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #1e1e1e;
+    padding: 10px;
+    padding-bottom: env(safe-area-inset-bottom); /* Berücksichtigt den Safe-Area-Inset auf iOS */
+}
 
 .chat-message {
-    position: fixed; /* Fixiert das Eingabefeld */
+    position: fixed;
     bottom: 0;
     left: 0;
     width: 100%;
