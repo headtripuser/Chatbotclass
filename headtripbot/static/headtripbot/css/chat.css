@@ -119,7 +119,7 @@ html, body {
 /* Text der Bot-Nachricht */
 .message-text {
     color: #e0e0e0; /* Hellgrauer Text */
-    padding:  15px; /* Innenabstand */
+    padding:  0px 15px 30px 15px; /* Innenabstand */
     word-wrap: break-word; /* Lange Wörter umbrechen */
 }
 
@@ -184,7 +184,8 @@ html, body {
     background: #5a5a5a;
 }
 .chat .chat-history {
-    padding: 20px;
+    padding-top: 40px;
+    padding-bottom: 40px;
     border-bottom: 2px solid #333;  /* Dunklere Trennlinie */
 }
 
@@ -407,7 +408,7 @@ html, body {
 .chat-history {
     flex: 1;
     overflow-y: auto !important; /* Scrollbar aktivieren */
-    padding-bottom: 80px; /* Platz für das Eingabefeld */
+    padding-bottom: 160px; /* Platz für das Eingabefeld */
     max-height: calc(100vh - 100px); /* Verhindert, dass Nachrichten aus dem sichtbaren Bereich rutschen */
 }
 
