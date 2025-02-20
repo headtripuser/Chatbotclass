@@ -388,6 +388,42 @@ html, body {
     height: 0;
 }
 
+@media (max-width: 767px) {
+
+
+    html {
+    background:#1e1e1e;
+    }
+
+  body {
+    margin: 0;
+    overflow: hidden;
+    background: #1e1e1e;
+    padding-bottom: env(safe-area-inset-bottom);
+    -webkit-overflow-scrolling: touch;
+  }
+
+
+
+#userInput {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.chat-message {
+    position: fixed; /* Fixiert das Eingabefeld */
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: #1e1e1e;
+    padding: 10px;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
+}
+}
+
 
 @media only screen and (min-width: 768px) and (max-width: 992px) {
     .chat-app .chat-history {
