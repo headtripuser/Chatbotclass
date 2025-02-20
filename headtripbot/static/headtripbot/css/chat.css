@@ -366,14 +366,21 @@ html, body {
     padding: 0;
   }
 
-  .container {
-    height: 100vh;
-  }
 
   .full-height {
   height: calc(var(--vh, 1vh) * 100);
 }
 
+#userInput {
+  .text-input {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+}
 
 .chat-message {
     position: fixed; /* Fixiert das Eingabefeld */
