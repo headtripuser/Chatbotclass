@@ -57,7 +57,7 @@ html, body {
 
 
 .card {
-    background: #121212;        /* Dunkler Hintergrund für die Karte */
+    background: #1e1e1e;        /* Dunkler Hintergrund für die Karte */
     transition: .5s;
     border-radius:0;
     border: 0;
@@ -252,17 +252,17 @@ html, body {
 
 .chat .chat-message {
     padding: 20px;
-    background-color: #121212;  /* Dunkler Hintergrund für die Eingabezeile */
+    background-color: #1e1e1e;  /* Dunkler Hintergrund für die Eingabezeile */
     border-radius: 0.55rem 0.55rem 0 0;
 
 }
 
 .input-group {
-    background-color: #121212;  /* Dunkler Hintergrund für das Eingabefeld */
+    background-color: #1e1e1e;  /* Dunkler Hintergrund für das Eingabefeld */
 }
 
 .input-group .form-control {
-    background-color: #121212;  /* Dunkler Hintergrund für das Textfeld */
+    background-color: #1e1e1e;  /* Dunkler Hintergrund für das Textfeld */
     color: #e0e0e0;             /* Hellgrauer Text */
     border: 1px solid #333;     /* Dunkler Rahmen */
 }
