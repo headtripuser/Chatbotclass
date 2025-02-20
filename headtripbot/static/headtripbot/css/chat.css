@@ -403,15 +403,21 @@ html, body {
     -webkit-overflow-scrolling: touch;
   }
 
+  .container, .row, .col-lg-10 {
+    padding: 0;
+  }
 
 
-#userInput {
+
+  .text-input {
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
   padding-bottom: env(safe-area-inset-bottom);
 }
+
+
 
 .chat-message {
     position: fixed; /* Fixiert das Eingabefeld */
