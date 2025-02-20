@@ -56,7 +56,7 @@ html, body {
 
 
 .card {
-    background: black;        /* Dunkler Hintergrund für die Karte */
+    background: #121212;        /* Dunkler Hintergrund für die Karte */
     transition: .5s;
     border-radius:0;
     border: 0;
@@ -251,17 +251,17 @@ html, body {
 
 .chat .chat-message {
     padding: 20px;
-    background-color: black;  /* Dunkler Hintergrund für die Eingabezeile */
+    background-color: #121212;  /* Dunkler Hintergrund für die Eingabezeile */
     border-radius: 0.55rem 0.55rem 0 0;
 
 }
 
 .input-group {
-    background-color: black;  /* Dunkler Hintergrund für das Eingabefeld */
+    background-color: #121212;  /* Dunkler Hintergrund für das Eingabefeld */
 }
 
 .input-group .form-control {
-    background-color: black;  /* Dunkler Hintergrund für das Textfeld */
+    background-color: #121212;  /* Dunkler Hintergrund für das Textfeld */
     color: #e0e0e0;             /* Hellgrauer Text */
     border: 1px solid #333;     /* Dunkler Rahmen */
 }
@@ -332,6 +332,42 @@ html, body {
 
 }
 
+/* Stil für den Lade-Container */
+.loader {
+    width: 4em;
+    height: 4em;
+    position: relative;
+    margin: auto;
+}
+
+/* Stil für die Kreise */
+.loader .bounce {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-color: #337ab7; /* Farbe der Kreise */
+    opacity: 0.6;
+    position: absolute;
+    top: 0;
+    left: 0;
+    animation: bounce 2.0s infinite ease-in-out;
+}
+
+/* Verzögerung für den zweiten Kreis */
+.loader .bounce2 {
+    animation-delay: -1.0s;
+}
+
+/* Keyframes für die Bounce-Animation */
+@keyframes bounce {
+    0%, 100% {
+        transform: scale(0);
+    }
+    50% {
+        transform: scale(1.0);
+    }
+}
+
 #record-button:hover {
     background-color: #3a3a3a;
     color: #e0e0e0;
@@ -356,7 +392,7 @@ html, body {
   body {
     margin: 0;
     overflow: hidden;
-    background: black;
+    background: #121212;
     padding-bottom: env(safe-area-inset-bottom);
     -webkit-overflow-scrolling: touch;
   }

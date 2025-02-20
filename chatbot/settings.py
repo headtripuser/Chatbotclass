@@ -67,12 +67,13 @@ CHANNEL_LAYERS = {
     },
 }
 
-
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],  # Pfad zu deinen Templates
-        'APP_DIRS': True,  # Django sucht in den App-Verzeichnissen nach Templates
+        'DIRS': [
+            os.path.join(BASE_DIR, 'headtripbot', 'templates')
+        ],
+        'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
