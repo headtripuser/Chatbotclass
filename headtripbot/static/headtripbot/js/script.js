@@ -16,14 +16,14 @@ chatInput.addEventListener('input', () => {
     }
 });
 
-// **🔄 Automatische Anpassung der Textarea-Höhe**
-function adjustTextareaHeight() {
-    chatInput.style.height = "40px"; // Zurücksetzen, um richtige Höhe zu berechnen
-    chatInput.style.height = Math.min(chatInput.scrollHeight, 150) + "px"; // Begrenzung auf max. 150px
+function adjustViewport() {
+  const vh = window.innerHeight * 0.01;
+  document.documentElement.style.setProperty('--vh', `${vh}px`);
 }
 
-// **📌 Event Listener für Eingaben im Textfeld**
-chatInput.addEventListener("input", adjustTextareaHeight);
+window.addEventListener('resize', adjustViewport);
+adjustViewport();
+
 
 
 // **🔄 Enter-Taste für Nachrichtensenden aktivieren**

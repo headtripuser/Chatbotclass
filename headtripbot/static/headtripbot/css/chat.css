@@ -352,11 +352,13 @@ html, body {
 }
 
 @media (max-width: 767px) {
+
   body {
     margin: 0;
     overflow: hidden;
     background: black;
     padding-bottom: env(safe-area-inset-bottom);
+    -webkit-overflow-scrolling: touch;
   }
 
   .container, .row, .col-lg-10 {
@@ -367,6 +369,11 @@ html, body {
   .container {
     height: 100vh;
   }
+
+  .full-height {
+  height: calc(var(--vh, 1vh) * 100);
+}
+
 
 .chat-message {
     position: fixed; /* Fixiert das Eingabefeld */
