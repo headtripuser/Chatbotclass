@@ -398,7 +398,7 @@ html, body {
   body {
     margin: 0;
     overflow: hidden;
-    background: white;
+    background: #1e1e1e;
     padding-bottom: env(safe-area-inset-bottom);
     -webkit-overflow-scrolling: touch;
   }
