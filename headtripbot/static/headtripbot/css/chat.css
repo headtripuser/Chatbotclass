@@ -7,7 +7,7 @@ body {
 }
 
 html, body {
-    height: 140%;
+    height: 100%;
     overflow: hidden; /* Kein Scrollen der gesamten Seite */
     touch-action: manipulation;
     background: black;
@@ -16,14 +16,14 @@ html, body {
 .chat {
     display: flex;
     flex-direction: column;
-    height: 120vh; /* Verhindert, dass sich das Layout unerwartet ändert */
+    height: 100vh; /* Verhindert, dass sich das Layout unerwartet ändert */
     overflow: hidden;
 }
 
 /* Dynamische Anpassung für iOS */
 @supports (-webkit-touch-callout: none) {
     .chat {
-        height: calc(120vh - env(safe-area-inset-bottom)); /* Berücksichtigt den Safari Safe Area */
+        height: calc(100vh - env(safe-area-inset-bottom)); /* Berücksichtigt den Safari Safe Area */
     }
 }
 
@@ -358,12 +358,12 @@ html, body {
   }
 
   .container, .row, .col-lg-10 {
-    height: 120vh;
+    height: 100vh;
     padding: 0;
   }
 
   .container {
-    height: 120vh;
+    height: 100vh;
   }
 
 .chat-message {
@@ -387,7 +387,7 @@ html, body {
 
 @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 1) {
     .chat-app .chat-history {
-        height: calc(120vh - 350px);
+        height: calc(100vh - 350px);
         overflow-x: auto;
     }
 }
