@@ -10,6 +10,7 @@ html, body {
     height: 100%;
     overflow: hidden; /* Kein Scrollen der gesamten Seite */
     touch-action: manipulation;
+    background: black;
 }
 
 .chat {
