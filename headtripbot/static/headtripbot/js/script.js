@@ -153,7 +153,6 @@ function displayErrorMessage(message) {
         status.textContent = "Mikrofonzugriff verweigert!";
     }
 }
-
 // **📨 Nachricht senden**
 function sendMessage() {
     const userInput = chatInput.value.trim();
@@ -177,10 +176,12 @@ function sendMessage() {
     loadingIndicator.innerHTML = `
         <div class="message-data">
             <div class="message my-message">
-                <div class="bot-avatar"></div>
-                <div class="message-text">
-                    <span class="typing-indicator"></span>
+                <!-- Hier kommt die Ladeanimation statt des Avatars -->
+                <div class="loader">
+                    <div class="bounce bounce1"></div>
+                    <div class="bounce bounce2"></div>
                 </div>
+                <div class="message-text"></div>
             </div>
         </div>
     `;
@@ -208,9 +209,9 @@ function sendMessage() {
             botMessage.innerHTML = `
                 <div class="message-data">
                     <div class="message my-message">
+                        <!-- Avatar erscheint jetzt wieder -->
                         <div class="bot-avatar"></div>
                         <div class="message-text">${data.response.replace(/\n/g, "<br>")}</div>
-
                     </div>
                 </div>
             `;

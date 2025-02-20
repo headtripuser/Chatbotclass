@@ -10,6 +10,7 @@ html, body {
     height: 100%;
     overflow: hidden; /* Kein Scrollen der gesamten Seite */
     touch-action: manipulation;
+    background: #1e1e1e;
 
 }
 
@@ -332,20 +333,20 @@ html, body {
 
 }
 
-/* Stil für den Lade-Container */
+/* Stil für den Lade-Container (ersetzt Avatar) */
 .loader {
-    width: 4em;
-    height: 4em;
+    width: 2em;
+    height: 2em;
     position: relative;
-    margin: auto;
+    display: inline-block;
 }
 
-/* Stil für die Kreise */
+/* Die beiden Kreise */
 .loader .bounce {
     width: 100%;
     height: 100%;
     border-radius: 50%;
-    background-color: #337ab7; /* Farbe der Kreise */
+    background-color: rgb(218,245,15);
     opacity: 0.6;
     position: absolute;
     top: 0;
@@ -353,12 +354,11 @@ html, body {
     animation: bounce 2.0s infinite ease-in-out;
 }
 
-/* Verzögerung für den zweiten Kreis */
+/* Verzögerung für zweiten Kreis */
 .loader .bounce2 {
     animation-delay: -1.0s;
 }
 
-/* Keyframes für die Bounce-Animation */
 @keyframes bounce {
     0%, 100% {
         transform: scale(0);
@@ -367,6 +367,7 @@ html, body {
         transform: scale(1.0);
     }
 }
+
 
 #record-button:hover {
     background-color: #3a3a3a;
