@@ -8,7 +8,7 @@ body {
 
 html, body {
     height: 100%;
-    overflow-y: auto; /* Kein Scrollen der gesamten Seite */
+    overflow-y: hidden; /* Kein Scrollen der gesamten Seite */
     touch-action: manipulation;
 
 
@@ -18,7 +18,7 @@ html, body {
     display: flex;
     flex-direction: column;
     height: 100vh; /* Verhindert, dass sich das Layout unerwartet ändert */
-    overflow-y: auto;
+    overflow-y: hidden;
 }
 
 /* Dynamische Anpassung für iOS */
@@ -384,7 +384,7 @@ html, body {
         margin: 0;
         padding: 0;
         height: 100%;
-        overflow-y: auto;
+        overflow-y: hidden;
         -webkit-overflow-scrolling: touch;
     }
 
