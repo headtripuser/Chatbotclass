@@ -8,7 +8,7 @@ body {
 
 html, body {
     height: 100%;
-    overflow: auto; /* Kein Scrollen der gesamten Seite */
+    overflow-y: auto; /* Kein Scrollen der gesamten Seite */
     touch-action: manipulation;
 
 
@@ -18,7 +18,7 @@ html, body {
     display: flex;
     flex-direction: column;
     height: 100vh; /* Verhindert, dass sich das Layout unerwartet ändert */
-    overflow: hidden;
+    overflow-y: auto;
 }
 
 /* Dynamische Anpassung für iOS */
@@ -424,13 +424,13 @@ html, body {
 @media only screen and (min-width: 768px) and (max-width: 992px) {
     .chat-app .chat-history {
         height: 600px;
-        overflow-x: auto;
+        overflow-y: auto;
     }
 }
 
 @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 1) {
     .chat-app .chat-history {
         height: calc(100vh - 350px);
-        overflow-x: auto;
+        overflow-y: auto;
     }
 }
