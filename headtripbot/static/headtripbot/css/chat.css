@@ -403,12 +403,12 @@ html, body {
     height: 100vh; /* Volle Höhe nutzen */
     display: flex;
     flex-direction: column;
+    padding: 0;
 }
 
 .chat-history {
     flex: 1;
     overflow-y: auto !important; /* Scrollbar aktivieren */
-    padding-bottom: 160px; /* Platz für das Eingabefeld */
     max-height: calc(100vh - 100px); /* Verhindert, dass Nachrichten aus dem sichtbaren Bereich rutschen */
 }
 
