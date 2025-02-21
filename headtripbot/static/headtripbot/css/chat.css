@@ -8,7 +8,7 @@ body {
 
 html, body {
     height: 100%;
-    overflow: hidden; /* Kein Scrollen der gesamten Seite */
+    overflow: auto; /* Kein Scrollen der gesamten Seite */
     touch-action: manipulation;
 
 
@@ -39,12 +39,6 @@ html, body {
     border: 2px solid rgb(218,245,15);
     border-radius: 20px;
 }
-
-
-#userInput::placeholder {
-    content: "🔬 Frag das Kollektiv... 🦜";
-}
-
 
 
 /* Weiße Umrandung beim Fokussieren des Eingabefelds */
@@ -161,7 +155,7 @@ html, body {
 .chat-history {
     flex: 1;
     overflow-y: auto; /* Scrollbare Chat-History */
-    padding-bottom: 60px; /* Platz für das Eingabefeld */
+
 }
 
 
@@ -183,10 +177,7 @@ html, body {
 .chat-history::-webkit-scrollbar-thumb:hover {
     background: #5a5a5a;
 }
-.chat .chat-history {
-    padding: 40px 15px 0px 15px
-    border-bottom: 2px solid #333;  /* Dunklere Trennlinie */
-}
+
 
 .chat .chat-history ul {
     padding: 0;
@@ -234,7 +225,7 @@ html, body {
 
 
 .chat .chat-history .other-message {
-    margin: 3rem 1rem 1rem 1.5rem;
+    margin: 2rem 1rem 1rem 1.5rem;
     background: #3a3a3a;  /* Dunklere Farbe für Bot-Nachrichten */
     text-align: left;
     border: 2px solid rgb(218,245,15);
@@ -246,17 +237,13 @@ html, body {
 .chat-message {
   position: sticky;
   bottom: 0;
+  padding: 20px;
   background: #1e1e1e;
   z-index: 1000;
-  padding: 15px !important;
+  border-radius: 0.55rem 0.55rem 0 0;
 }
 
-.chat .chat-message {
-    padding: 20px;
-    background-color: #1e1e1e;  /* Dunkler Hintergrund für die Eingabezeile */
-    border-radius: 0.55rem 0.55rem 0 0;
 
-}
 
 .input-group {
     background-color: #1e1e1e;  /* Dunkler Hintergrund für das Eingabefeld */
@@ -392,14 +379,14 @@ html, body {
 }
 @media (max-width: 767px) {
 
-html, body {
-    background: #1e1e1e;
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    overflow: hidden; /* Verhindert unerwünschtes Scrollen auf der gesamten Seite */
-    -webkit-overflow-scrolling: touch; /* Sanfteres Scrollen auf iOS */
-}
+  html, body {
+        background: #1e1e1e;
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
 
 .container {
     height: 100vh; /* Volle Höhe nutzen */
@@ -410,8 +397,8 @@ html, body {
 
 .chat-history {
     flex: 1;
-    overflow-y: auto !important; /* Scrollbar aktivieren */
-    padding-bottom: 80px;
+    overflow-y: auto !important;
+
 }
 
 .text-input {
