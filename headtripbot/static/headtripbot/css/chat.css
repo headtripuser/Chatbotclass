@@ -405,7 +405,7 @@ html, body {
     height: 100vh; /* Volle Höhe nutzen */
     display: flex;
     flex-direction: column;
-    padding: 0;
+
 }
 
 .chat-history {
