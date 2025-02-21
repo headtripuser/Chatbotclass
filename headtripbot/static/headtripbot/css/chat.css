@@ -113,7 +113,7 @@ html, body {
 /* Text der Bot-Nachricht */
 .message-text {
     color: #e0e0e0; /* Hellgrauer Text */
-    padding:  1rem 3rem 3rem 1rem; /* Innenabstand */
+    padding:  1rem 3rem 1rem 1rem; /* Innenabstand */
     word-wrap: break-word; /* Lange Wörter umbrechen */
 }
 
