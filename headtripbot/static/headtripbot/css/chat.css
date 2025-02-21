@@ -423,9 +423,6 @@ html, body {
 }
 
 .chat-message {
-    position: sticky;
-    bottom: 0;
-    left: 0;
     width: 100%;
     background: #1e1e1e;
     padding: 10px;
