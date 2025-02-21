@@ -112,14 +112,14 @@ html, body {
     justify-content: center; /* Horizontal zentrieren */
     font-size: 14px; /* Schriftgröße */
     font-weight: bold; /* Fetter Text */
-    margin-left: 0;
+    margin-left: 1rem;
     flex-shrink: 0; /* Verhindert, dass der Avatar schrumpft */
 }
 
 /* Text der Bot-Nachricht */
 .message-text {
     color: #e0e0e0; /* Hellgrauer Text */
-    padding:  0px 15px 30px 15px; /* Innenabstand */
+    padding:  1rem 3rem 3rem 1rem; /* Innenabstand */
     word-wrap: break-word; /* Lange Wörter umbrechen */
 }
 
@@ -184,8 +184,7 @@ html, body {
     background: #5a5a5a;
 }
 .chat .chat-history {
-    padding-top: 40px;
-    padding-bottom: 40px;
+    padding: 40px 15px 0px 15px
     border-bottom: 2px solid #333;  /* Dunklere Trennlinie */
 }
 
@@ -235,6 +234,7 @@ html, body {
 
 
 .chat .chat-history .other-message {
+    margin: 3rem 1rem 1rem 1.5rem;
     background: #3a3a3a;  /* Dunklere Farbe für Bot-Nachrichten */
     text-align: left;
     border: 2px solid rgb(218,245,15);
@@ -342,6 +342,8 @@ html, body {
     display: inline-block;
 }
 
+
+
 /* Die beiden Kreise */
 .loader .bounce {
     width: 100%;
@@ -351,7 +353,7 @@ html, body {
     opacity: 0.6;
     position: absolute;
     top: 0;
-    left: 0;
+    left: 1rem;
     animation: bounce 2.0s infinite ease-in-out;
 }
 
@@ -409,7 +411,7 @@ html, body {
 .chat-history {
     flex: 1;
     overflow-y: auto !important; /* Scrollbar aktivieren */
-    max-height: calc(100vh - 100px); /* Verhindert, dass Nachrichten aus dem sichtbaren Bereich rutschen */
+    padding-bottom: 80px;
 }
 
 .text-input {
