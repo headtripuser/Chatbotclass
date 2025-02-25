@@ -165,6 +165,8 @@ def create_article(title, content, session, client, vector_store_id):
             return {"success": False, "message": f"Fehler beim Erstellen des Artikels: {response.json()}"}
 
 
+import time
+
 
 def edit_article(title, user_request, session, client, vector_store_id):
     """Bearbeitet den Inhalt eines existierenden Artikels."""
@@ -199,22 +201,35 @@ def edit_article(title, user_request, session, client, vector_store_id):
 
         # Aktualisieren des Vector Stores
         delete_article(title, client, vector_store_id, session)
+
+        # Warten, bis der Artikel tatsächlich gelöscht ist
+        max_retries = 55555555
+        delay_seconds = 1
+        for i in range(max_retries):
+            time.sleep(delay_seconds)
+            if not get_article_content(title, session):
+                print("Löschung bestätigt: Artikel ist nicht mehr vorhanden.")
+                break
+            else:
+                print(f"Warte auf vollständige Löschung des Artikels... Versuch {i + 1}/{max_retries}")
+        else:
+            print("Warnung: Artikel konnte nach mehreren Versuchen nicht als gelöscht bestätigt werden.")
+
+        # Neuerstellung des Artikels mit dem neuen Inhalt
         create_article(title, assistant_output, session, client, vector_store_id)
 
-        # 3. Speichern des neuen Artikels
+        # 3. Speichern des neuen Artikels im Wiki
         print("Speichere die Änderungen im Wiki...")
         save_response = save_article(title, assistant_output, session)
 
         if save_response.get("edit", {}).get("result") == "Success":
-            return {"success": True, "message": f"Artikel '{title}' erfolgreich bearbeitet: \n {assistant_output}"}
+            return {"success": True, "message": f"Artikel '{title}' erfolgreich bearbeitet:\n{assistant_output}"}
         else:
-            return {"success": False, "message": f"Fehler beim Bearbeiten des Artikels: {save_response}"}, None
+            return {"success": False, "message": f"Fehler beim Speichern des Artikels: {save_response}"}, None
 
     except Exception as e:
         print(f"Fehler bei der Bearbeitung: {e}")
         return {"success": False, "message": f"Fehler bei der Bearbeitung: {e}"}, None
-
-
 
 
 def save_article(title, text, session):
