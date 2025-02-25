@@ -140,6 +140,8 @@ def create_article(title, content, session, client, vector_store_id):
         edit_token_response = session.get(api_url, params=edit_token_params)
         edit_token = edit_token_response.json()["query"]["tokens"]["csrftoken"]
 
+        print(edit_token)
+
         # Artikel erstellen
         create_params = {
             "action": "edit",
