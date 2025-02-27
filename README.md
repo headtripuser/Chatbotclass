@@ -14,18 +14,18 @@
      - [Frontend](#232-frontend)
      - [Datenquelle](#233-datenquelle)
    - [Datenfluss](#24-datenfluss)
-3. [**Installation & Setup**](#3-installation--setup)
+3. [**OpenAI API-Dokumentation**](#5-api-dokumentation)
+   - [Endpunkte & Methoden](#51-endpunkte-methoden)
+   - [Beispielanfragen und Antworten](#52-beispielanfragen-und-antworten)
+4. [**Installation & Setup**](#3-installation--setup)
    - [Voraussetzungen](#31-voraussetzungen)
    - [Installation](#32-installation)
    - [Umgebungsvariablen](#33-umgebungsvariablen)
    - [Starten des Chatbots](#34-starten-des-chatbots)
-5. [**OpenAI API-Dokumentation**](#5-api-dokumentation)
-   - [Endpunkte & Methoden](#51-endpunkte-methoden)
-   - [Beispielanfragen und Antworten](#52-beispielanfragen-und-antworten)
-8. [**Deployment & Wartung**](#8-deployment-wartung)
+5. [**Deployment & Wartung**](#8-deployment-wartung)
    - [Hosting](#81-hosting)
    - [Backup](#82-backup)
-9. [**Zukunftspläne & Erweiterungen**](#9-zukunftsplaene-erweiterungen)
+6. [**Zukunftspläne & Erweiterungen**](#9-zukunftsplaene-erweiterungen)
    - [Mögliche Verbesserungen](#91-moegliche-verbesserungen)
    - [Langfristige Wartung & Skalierung](#92-langfristige-wartung-skalierung)
 
@@ -284,11 +284,7 @@ Speichert den bearbeiteten Artikel im MediaWiki.
 - `session` (requests.Session): Authentifizierte Sitzung.
 
 
-##
-
-# OpenAI Assistant – Headtrip Wiki
-
-## OpenAI Assistant-Konfiguration
+## 3. OpenAI Assistant-Konfiguration
 
 **Assistent:** [Headtrip Assistant](https://platform.openai.com/assistants/asst_KR9HhWRsQXJy63NTFwTVnUe8)
 
@@ -369,7 +365,7 @@ Der Assistent nutzt OpenAIs **Function Calling**, um direkt mit der Mediawiki AP
 
 ---
 
-## **3. Installation & Setup**
+## **4. Installation & Setup**
 
 # Installationsanleitung für die Chatbotclass Django-App
 
@@ -456,7 +452,7 @@ Bevor du beginnst, stelle sicher, dass du Folgendes installiert hast:
 Deine Django-Anwendung wurde erfolgreich auf Render bereitgestellt!
 
 
-## **3. Hosting auf Render**
+## **5. Hosting auf Render**
 
 Render ist eine Cloud-Plattform für das einfache Hosting von Webanwendungen. Sie bietet automatische Deployments, Skalierung und Monitoring.
 
@@ -499,7 +495,7 @@ Nach erfolgreichem Deployment ist die Django-Anwendung unter folgender URL errei
 ---
 
 
-## **4. Zukunftspläne & Erweiterungen**  
+## **6. Zukunftspläne & Erweiterungen**  
 
 ### **Datenbankintegration für Chatverläufe**  
 Derzeit basiert der Chatbot ausschließlich auf einem Vector Store und verfügt über keine Datenbank. Eine sinnvolle Erweiterung wäre die Implementierung einer Datenbank, die es ermöglicht, Chatverläufe zu speichern und für Benutzer abrufbar zu machen. Da die Anwendung auf der Django-Plattform basiert, sind bereits die notwendigen Strukturen vorhanden, um diese Funktion effizient zu integrieren. 
