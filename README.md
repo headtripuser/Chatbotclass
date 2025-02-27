@@ -7,7 +7,7 @@
    - Ziel
    - Zielgruppe
    - Kurzüberblick
-2. [**Technischer Überblick](#2-technischer-ueberblick)
+2. [**Technischer Überblick**](#2-technischer-ueberblick)
    - Architektur
    - Hauptkomponenten
      - Backend
