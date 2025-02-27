@@ -30,7 +30,7 @@
    - [Langfristige Wartung & Skalierung](#92-langfristige-wartung-skalierung)
 
 
-## **1. Einleitung** {#1-einleitung}
+## **1. Einleitung**
 
 
 ### **1.1 Projektname**
