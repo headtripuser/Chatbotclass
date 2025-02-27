@@ -507,4 +507,105 @@ Die aktuellen `wiki_utils`-Funktionen sollten in asynchrone Funktionen umgewande
 Eine weitere nützliche Erweiterung wäre die Implementierung einer Internetsuche. Dadurch könnte der Chatbot auf aktuelle Informationen zugreifen und sich dynamisch an neue Inhalte anpassen, was seine Einsatzmöglichkeiten erheblich erweitern würde.  
 
 
+## **7. Schritt-für-Schritt-Anleitung zur Umsetzung des Chatbots auf ein neues Wikipedia**
+
+### 1. MediaWiki API aktivieren
+
+Damit der Chatbot mit dem MediaWiki interagieren kann, muss die API-Funktion aktiviert sein. Dies erfolgt über die `LocalSettings.php`-Datei.
+
+**Vorgehensweise:**
+
+1. Öffne die `LocalSettings.php`-Datei des MediaWiki.
+2. Füge folgende Zeile hinzu, falls sie nicht bereits existiert:
+   ```php
+   $wgEnableAPI = true;
+   $wgEnableWriteAPI = true;
+   ```
+3. Speichere die Datei und starte den Webserver neu.
+
+### 2. Neue Nutzer im MediaWiki anlegen
+
+Damit der Chatbot sich anmelden und Bearbeitungen vornehmen kann, muss ein dedizierter Nutzer angelegt werden.
+
+**Vorgehensweise:**
+
+1. Gehe zur `Spezial:Benutzer_anlegen`-Seite deines MediaWiki.
+2. Erstelle einen neuen Benutzer für den Chatbot (z. B. `ChatbotUser`).
+3. Weise dem Benutzer entsprechende Rechte zu (z. B. Bearbeiten und Lesen der API).
+
+### 3. Neuen Headtrip Assistant konfigurieren
+
+Der Headtrip Assistant wird für die Kommunikation mit dem Chatbot benötigt.
+
+**Vorgehensweise:**
+
+1. Erstelle einen neuen Assistant im Headtrip-Dashboard.
+2. Konfiguriere die API-Endpunkte für die Kommunikation mit dem MediaWiki.
+3. Speichere die Konfiguration.
+
+### 4. Vector Store erstellen
+
+Ein Vector Store wird benötigt, um semantische Suchanfragen effizient durchzuführen.
+
+**Vorgehensweise:**
+
+1. Wähle eine geeignete Vector-Datenbank (z. B. Pinecone, Weaviate oder FAISS).
+2. Erstelle einen neuen Vector Store und konfiguriere ihn für die Speicherung von Wikipedia-Inhalten.
+3. Indexiere relevante Daten aus dem MediaWiki für schnelle semantische Suchanfragen.
+
+### 5. Neue System-Prompts für den Assistant anlegen
+
+Der Chatbot benötigt speziell angepasste System-Prompts für die Kommunikation.
+
+**Vorgehensweise:**
+
+1. Definiere die System-Prompts für den Assistant (z. B. Begrüßungen, Antwortstile, Kontextinformationen).
+2. Hinterlege die Prompts in der Konfiguration des Headtrip Assistants.
+3. Teste die Prompts in einer Testumgebung, um sicherzustellen, dass sie korrekt funktionieren.
+
+### 6. Neues GitHub Repository anlegen
+
+Der Code für den Chatbot muss in einem eigenen GitHub Repository gespeichert werden.
+
+**Vorgehensweise:**
+
+1. Erstelle ein neues Repository auf GitHub.
+2. Initialisiere das Repository lokal und pushe den Code:
+   ```sh
+   git init
+   git add .
+   git commit -m "Initial commit"
+   git branch -M main
+   git remote add origin <GITHUB_REPO_URL>
+   git push -u origin main
+   ```
+3. Stelle sicher, dass alle benötigten Dateien, wie Konfigurationsdateien und Skripte, enthalten sind.
+
+### 7. GitHub Repository mit Render verknüpfen und Render App deployen
+
+Die Render-Plattform wird für das Hosting und die Bereitstellung des Chatbots genutzt.
+
+**Vorgehensweise:**
+
+1. **Render-Konto erstellen**: Falls noch nicht geschehen, erstelle ein Konto auf [Render](https://render.com/).
+2. **Neues Web Service Projekt anlegen**:
+   - Navigiere zum Render-Dashboard.
+   - Klicke auf `New Web Service` und wähle `Connect a Repository`.
+   - Wähle dein zuvor erstelltes GitHub-Repository aus.
+3. **Build- und Start-Befehle angeben**:
+   - Falls dein Projekt ein Python-Backend verwendet, gib folgende Befehle ein:
+     ```sh
+     pip install -r requirements.txt
+     python app.py
+     ```
+   - Falls du Node.js nutzt:
+     ```sh
+     npm install
+     npm start
+     ```
+4. **Deploy starten**: Klicke auf `Deploy` und warte, bis der Prozess abgeschlossen ist.
+5. **Erreichbarkeit testen**: Sobald das Deployment abgeschlossen ist, teste den Chatbot über die generierte Render-URL.
+
+
+
 
