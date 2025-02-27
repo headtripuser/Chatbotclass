@@ -52,7 +52,7 @@ Der Chatbot ist eine **Web-Applikation**, die auf der **OpenAI API** basiert. Si
 
 ---
 
-## **2. Technischer Überblick**
+## **2. Technischer Überblick** {#2-technischer-uberblick}
 
 ### **2.1 Architektur**
 Der Chatbot basiert auf dem **Django Web Framework** und folgt der **MVC-Architektur** (Model-View-Controller), implementiert als **MVT-Muster** (Model-View-Template).
