@@ -284,7 +284,7 @@ Speichert den bearbeiteten Artikel im MediaWiki.
 - `session` (requests.Session): Authentifizierte Sitzung.
 
 
-## 3. OpenAI Assistant-Konfiguration
+## **OpenAI API-Dokumentation**
 
 **Assistent:** [Headtrip Assistant](https://platform.openai.com/assistants/asst_KR9HhWRsQXJy63NTFwTVnUe8)
 
