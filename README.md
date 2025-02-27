@@ -3,31 +3,31 @@
 ## **Inhaltsverzeichnis**
 
 1. [**Einleitung**](#1-einleitung)
-   - [Projektname](#11-projektname)
-   - [Ziel](#12-ziel)
-   - [Zielgruppe](#13-zielgruppe)
-   - [Kurzüberblick](#14-kurzuberblick)
+   - Projektname
+   - Ziel
+   - Zielgruppe
+   - Kurzüberblick
 2. [**Technischer Überblick**](#2-technischer-uberblick)
-   - [Architektur](#21-architektur)
-   - [Hauptkomponenten](#23-hauptkomponenten)
-     - [Backend](#231-backend)
-     - [Frontend](#232-frontend)
-     - [Datenquelle](#233-datenquelle)
-   - [Datenfluss](#24-datenfluss)
+   - Architektur
+   - Hauptkomponenten
+     - Backend
+     - Frontend
+     - Datenquelle
+   - Datenfluss
 3. [**OpenAI API-Dokumentation**](#5-api-dokumentation)
-   - [Endpunkte & Methoden](#51-endpunkte-methoden)
-   - [Beispielanfragen und Antworten](#52-beispielanfragen-und-antworten)
+   - Endpunkte & Methoden
+   - Beispielanfragen und Antworten
 4. [**Installation & Setup**](#3-installation--setup)
-   - [Voraussetzungen](#31-voraussetzungen)
-   - [Installation](#32-installation)
-   - [Umgebungsvariablen](#33-umgebungsvariablen)
-   - [Starten des Chatbots](#34-starten-des-chatbots)
-5. [**Deployment & Wartung**](#8-deployment-wartung)
-   - [Hosting](#81-hosting)
-   - [Backup](#82-backup)
+   - Voraussetzungen
+   - Installation
+   - Umgebungsvariablen
+   - Starten des Chatbots
+5. [**Hosting**](#8-hosting)
+   - Render
+   - Umgebungsvariablen
 6. [**Zukunftspläne & Erweiterungen**](#9-zukunftsplaene-erweiterungen)
-   - [Mögliche Verbesserungen](#91-moegliche-verbesserungen)
-   - [Langfristige Wartung & Skalierung](#92-langfristige-wartung-skalierung)
+   - Mögliche Verbesserungen
+   - Langfristige Wartung & Skalierung
 
 
 ## **1. Einleitung**
