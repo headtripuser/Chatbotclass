@@ -452,7 +452,7 @@ Bevor du beginnst, stelle sicher, dass du Folgendes installiert hast:
 Deine Django-Anwendung wurde erfolgreich auf Render bereitgestellt!
 
 
-## **5. Hosting auf Render**
+## **5. Hosting**
 
 Render ist eine Cloud-Plattform für das einfache Hosting von Webanwendungen. Sie bietet automatische Deployments, Skalierung und Monitoring.
 
