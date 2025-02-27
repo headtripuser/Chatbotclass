@@ -7,7 +7,7 @@
    - Ziel
    - Zielgruppe
    - Kurzüberblick
-[Technischer Überblick](#2-technischer-ueberblick)
+[Technischer Überblick](#technischer-ueberblick)
 
    - Architektur
    - Hauptkomponenten
