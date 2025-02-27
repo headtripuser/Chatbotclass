@@ -19,26 +19,9 @@
    - [Installation](#32-installation)
    - [Umgebungsvariablen](#33-umgebungsvariablen)
    - [Starten des Chatbots](#34-starten-des-chatbots)
-4. [**Funktionen & Features**](#4-funktionen--features)
-   - [Hauptfunktionen](#41-hauptfunktionen)
-     - [Artikel abrufen](#411-artikel-abrufen)
-     - [Artikel zusammenfassen](#412-artikel-zusammenfassen)
-     - [Neue Artikel erstellen](#413-neue-artikel-erstellen)
-     - [Allgemeine Fragen beantworten](#414-allgemeine-fragen-beantworten)
-     - [Artikel löschen](#415-artikel-loeschen)
-     - [Artikel bearbeiten](#416-artikel-bearbeiten)
-   - [Wie werden Anfragen verarbeitet?](#42-wie-werden-anfragen-verarbeitet)
-   - [RAG-Integration: Entscheidungskriterien für Wikipedia-Artikelabruf](#43-rag-integration-entscheidungskriterien-fuer-wikipedia-artikelabruf)
-   - [JSON-Datenbank: Welche Daten werden gespeichert?](#44-json-datenbank-welche-daten-werden-gespeichert)
-5. [**API-Dokumentation**](#5-api-dokumentation)
+5. [**OpenAI API-Dokumentation**](#5-api-dokumentation)
    - [Endpunkte & Methoden](#51-endpunkte-methoden)
    - [Beispielanfragen und Antworten](#52-beispielanfragen-und-antworten)
-6. [**Benutzeroberfläche (UI)**](#6-benutzeroberflaeche-ui)
-   - [Beschreibung der UI: Welche Interaktionselemente gibt es?](#61-beschreibung-der-ui-welche-interaktionselemente-gibt-es)
-7. [**Fehlerbehandlung & Debugging**](#7-fehlerbehandlung-debugging)
-   - [Fehler und Lösungen](#71-fehler-und-loesungen)
-   - [Logging & Monitoring](#72-logging-monitoring)
-   - [Behandlung von API-Fehlermeldungen](#73-behandlung-von-api-fehlermeldungen)
 8. [**Deployment & Wartung**](#8-deployment-wartung)
    - [Hosting](#81-hosting)
    - [Backup](#82-backup)
@@ -132,47 +115,6 @@ client.beta.threads.messages.create(
 
 ### **2.3 Hauptkomponenten**
 
-2.3.1
-
-```markdown
-# Event Handler für OpenAI Assistant
-
-## Überblick
-
-Der `MyEventHandler` ist eine Klasse, die von `AssistantEventHandler` erbt und auf verschiedene Ereignisse reagiert, die während der Interaktion mit dem OpenAI Assistant auftreten.\
-Er verarbeitet Nachrichten, erkennt notwendige Aktionen und führt Funktionen zur Verwaltung von Wiki-Artikeln aus.
-
----
-
-## **Klassenbeschreibung**
-
-### `MyEventHandler`
-
-```python
-class MyEventHandler(AssistantEventHandler):
-```
-
-Diese Klasse erweitert `AssistantEventHandler` und implementiert benutzerdefinierte Logik für den Umgang mit eingehenden Ereignissen.
-
-### **Konstruktor**
-
-```python
-def __init__(self, client, thread_id, session, assistant_id, vector_store_id):
-```
-
-Der Konstruktor initialisiert folgende Parameter:
-
-- `client`: OpenAI-Client zur Kommunikation mit der API.
-- `thread_id`: ID des aktuellen Threads.
-- `session`: Sitzung für Authentifizierung und API-Zugriff.
-- `assistant_id`: ID des OpenAI-Assistenten.
-- `vector_store_id`: ID des Vektorspeichers für Wissensabruf.
-- `latest_response`: Speichert die letzte Antwort des Assistenten.
-- `last_function_called`: Vermerkt die zuletzt aufgerufene Funktion.
-- `last_function_result`: Speichert das Ergebnis der letzten Funktion.
-
----
-
 ## **Event Handling**
 
 ### `on_event(self, event)`
@@ -237,7 +179,7 @@ Sie unterstützt drei Funktionen für die MediaWiki-Verwaltung:
 
 ---
 
-## **Tool-Outputs senden**
+## **Tool-Outputs senden** (Siehe OpenAI Konfigurationen)
 
 ### `submit_tool_outputs(self, tool_outputs, run_id)`
 
@@ -514,20 +456,7 @@ Bevor du beginnst, stelle sicher, dass du Folgendes installiert hast:
 Deine Django-Anwendung wurde erfolgreich auf Render bereitgestellt!
 
 
----
-
-## **4. Funktionen & Features**
-
-- **Artikel abrufen**: Nutzer können vorhandene Wikipedia-Artikel durchsuchen.
-- **Artikel erstellen**: Automatisierte Erstellung neuer Artikel.
-- **Artikel bearbeiten**: Updates bestehender Artikel.
-- **Artikel löschen**: Entfernen nicht mehr relevanter Inhalte.
-- **Allgemeine Fragen beantworten**: OpenAI nutzt Wikipedia-Wissen zur Antwortgenerierung.
-
----
-
-## **8Hosting**
-# Hosting auf Render
+## **3. Hosting auf Render**
 
 Render ist eine Cloud-Plattform für das einfache Hosting von Webanwendungen. Sie bietet automatische Deployments, Skalierung und Monitoring.
 
@@ -569,7 +498,17 @@ Nach erfolgreichem Deployment ist die Django-Anwendung unter folgender URL errei
 
 ---
 
-## **9. Zukunftspläne & Erweiterungen**
+
+## **4. Zukunftspläne & Erweiterungen**  
+
+### **Datenbankintegration für Chatverläufe**  
+Derzeit basiert der Chatbot ausschließlich auf einem Vector Store und verfügt über keine Datenbank. Eine sinnvolle Erweiterung wäre die Implementierung einer Datenbank, die es ermöglicht, Chatverläufe zu speichern und für Benutzer abrufbar zu machen. Da die Anwendung auf der Django-Plattform basiert, sind bereits die notwendigen Strukturen vorhanden, um diese Funktion effizient zu integrieren. 
+
+### **Optimierung der Performance durch asynchrone Verarbeitung**  
+Die aktuellen `wiki_utils`-Funktionen sollten in asynchrone Funktionen umgewandelt werden, um die Performance des Chatbots zu verbessern. Zwar ist die Funktionalität bereits gegeben, jedoch leidet die Geschwindigkeit der Anwendung erheblich unter der Verfügbarkeit von OpenAI. Zusätzlich könnte die Implementierung von OpenAI-Streaming helfen, die Wartezeit für Nutzer zu verkürzen und eine flüssigere Interaktion zu ermöglichen.  
+
+### **Integration einer Internetsuche**  
+Eine weitere nützliche Erweiterung wäre die Implementierung einer Internetsuche. Dadurch könnte der Chatbot auf aktuelle Informationen zugreifen und sich dynamisch an neue Inhalte anpassen, was seine Einsatzmöglichkeiten erheblich erweitern würde.  
 
 
-E
+
