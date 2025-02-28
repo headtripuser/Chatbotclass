@@ -1,6 +1,7 @@
 from openai import AssistantEventHandler
 import json
 from .wiki_utills import edit_article, create_article, delete_article
+from .update_manager import check_sync_status  # Neue Importierung!
 
 wiki_base_url = "https://wiki.head-trip.de/index.php?title="
 
@@ -88,6 +89,25 @@ class MyEventHandler(AssistantEventHandler):
                         self.latest_response = f"Fehler beim Löschen des Artikels '{title}': {result.get('message')}"
                 else:
                     result = {"success": False, "message": "Titel fehlt für die Löschung des Artikels."}
+
+            elif tool_call.function.name == "check_sync_status":  # **NEUE FUNKTION**
+                self.last_function_called = "check_sync_status"
+                print("[DEBUG] Starte Synchronisationsprüfung zwischen MediaWiki & Vector Store...")
+
+                result = check_sync_status(self.client, self.vector_store_id, self.session)
+
+                missing_in_vector = result.get("missing_in_vector_store", [])
+                missing_in_wiki = result.get("missing_in_wiki", [])
+
+                if result["status"] == "ok":
+                    self.latest_response = "📂 MediaWiki und Vector Store sind synchron!"
+                else:
+                    self.latest_response = (
+                        f"🔄 Es gibt Unterschiede:\n"
+                        f"🟢 {len(missing_in_vector)} Artikel fehlen im Vector Store.\n"
+                        f"🟠 {len(missing_in_wiki)} Artikel fehlen im MediaWiki.\n"
+                        f"📝 Falls du möchtest, dass ich die Synchronisation starte, gib mir einfach Bescheid! 😊"
+                    )
 
             else:
                 self.last_function_called = "unknown"
